@@ -33,3 +33,15 @@ void Config::on_toolButton_clicked()
 
 
 }
+
+void Config::on_pushValider_clicked()
+{
+
+    emit emsigConf(ui->comboWebcam->currentIndex());
+
+}
+
+void Config::on_pushAnnuler_clicked()
+{
+
+}

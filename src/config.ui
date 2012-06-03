@@ -635,17 +635,33 @@
     <string>Naviguer</string>
    </property>
   </widget>
-  <widget class="QDialogButtonBox" name="buttonBox">
+  <widget class="QPushButton" name="pushValider">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>410</x>
      <y>430</y>
-     <width>176</width>
-     <height>27</height>
+     <width>91</width>
+     <height>21</height>
     </rect>
    </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   <property name="toolTip">
+    <string>Démarrer une série de mesure</string>
+   </property>
+   <property name="text">
+    <string>Valider</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushAnnuler">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>430</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Annuler</string>
    </property>
   </widget>
   <zorder>frame_4</zorder>
@@ -673,7 +689,8 @@
   <zorder>spinCoefRef2</zorder>
   <zorder>spinCoefRef1</zorder>
   <zorder>toolButton</zorder>
-  <zorder>buttonBox</zorder>
+  <zorder>pushValider</zorder>
+  <zorder>pushAnnuler</zorder>
  </widget>
  <resources/>
  <connections/>

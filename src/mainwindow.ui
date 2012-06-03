@@ -276,9 +276,9 @@
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>550</x>
+      <x>530</x>
       <y>40</y>
-      <width>61</width>
+      <width>80</width>
       <height>21</height>
      </rect>
     </property>
@@ -288,7 +288,7 @@
      </font>
     </property>
     <property name="text">
-     <string>atuel :</string>
+     <string>actuelle :</string>
     </property>
    </widget>
    <widget class="QFrame" name="frame_4">
@@ -365,16 +365,26 @@
     </rect>
    </property>
    <widget class="QMenu" name="menuConfigurer_des_mesures">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
      <string>Configuration</string>
     </property>
+    <addaction name="separator"/>
     <addaction name="actionConfiguration_avanc_e"/>
    </widget>
    <addaction name="menuConfigurer_des_mesures"/>
   </widget>
   <action name="actionConfiguration_avanc_e">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Configuration avancée</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
    </property>
   </action>
  </widget>

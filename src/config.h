@@ -10,7 +10,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include <QFileDialog>
-
+#include <QMessageBox>
 #include <QWidget>
 
 namespace Ui {
@@ -27,6 +27,11 @@ public:
     
 private slots:
     void on_toolButton_clicked();
+    void on_pushValider_clicked();
+    void on_pushAnnuler_clicked();
+
+signals :
+    void emsigConf(int);
 
 private:
     Ui::Config *ui;

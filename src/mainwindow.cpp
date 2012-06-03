@@ -8,6 +8,7 @@
 //AUTEUR : LARDIES Ludovic
 //-------------------------------------------------------
 #include "mainwindow.h"
+#include "ui_config.h"
 #include "ui_mainwindow.h"
 #include "config.h"
 #include "ui_config.h"
@@ -17,17 +18,24 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    Config conf;
-    ui->setupUi(this);
 
+    ui->setupUi(this);
     Rs232 *rs=Rs232::getInstance ();
 
     tAcqu=new ThreadAcquerir("interne");
 
     tAcqu->start();
 
+    int idcam;
+
+    connect(&conf,SIGNAL(emsigConf(int)),this,SLOT(recupFromCons(int)));
+
+//    cout<<idcam<<endl;
+//    if(conf->comboWebcam->currentIndex()==0)
+
+
     cam= new Camera();
-    cam->connecter(-1);
+    cam->connecter(idcam);
     cam->start();
 
     connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
@@ -39,6 +47,11 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::afficheCam(QImage image)
 {
     ui->labelCam->setPixmap(QPixmap::fromImage(image));
+}
+
+void MainWindow::recupFromCons(int cam)
+{
+   cout<<cam<<endl;
 }
 
 
@@ -108,4 +121,13 @@ void MainWindow::on_demarrer_clicked()
     et->start();
     connect(et,SIGNAL(emSigCons(QString)),ui->labelConsigne,SLOT(setText(QString)));
 }
+
+
+void MainWindow::on_actionConfiguration_avanc_e_triggered()
+{
+
+    conf.show();
+}
+
+
 

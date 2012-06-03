@@ -24,6 +24,8 @@ Rs232* Rs232::getInstance ()
 
 Rs232::Rs232()
 {
+
+
     cout<<"Un objet entree"<<endl;
 
     id_tty=open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_NONBLOCK); //

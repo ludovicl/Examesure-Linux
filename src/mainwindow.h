@@ -15,6 +15,7 @@
 #include "sonde.h"
 #include "etalonnage.h"
 #include "camera.h"
+#include "config.h"
 
 namespace Ui {
 class MainWindow;
@@ -32,14 +33,15 @@ private slots:
     void on_demarrer_clicked();
 
     void afficheCam(QImage);
+    void recupFromCons(int cam);
+    void on_actionConfiguration_avanc_e_triggered();
+
 
 
 private:
     ThreadAcquerir *tAcqu;
     Camera *cam;
-
-    //    IplImage *image;//pour test
-    //    CvCapture *camera;//pour test
+    Config conf;
     Ui::MainWindow *ui;
 };
 
