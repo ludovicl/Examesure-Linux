@@ -7,7 +7,14 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
+    int returnValue = a.exec();
 
+    if (0!=returnValue)
+    {
+        QProcess::startDetached(argv[0], a.arguments());
+//        delete &w;
+    }
+    return returnValue;
     
-    return a.exec();
+    //    return a.exec();
 }

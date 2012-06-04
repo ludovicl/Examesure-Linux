@@ -38,7 +38,7 @@ void Config::on_pushValider_clicked()
 {
 
     emit emsigConf(ui->comboWebcam->currentIndex());
-
+    qApp->exit(1);
 }
 
 void Config::on_pushAnnuler_clicked()

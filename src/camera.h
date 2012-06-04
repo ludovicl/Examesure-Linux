@@ -15,6 +15,7 @@
 #include <opencv/cv.h>
 #include <QImage>
 #include <QPixmap>
+#include "config.h"
 using namespace cv;
 class Camera : public QThread
 {
@@ -25,12 +26,18 @@ private :
     IplImage *image;
     QImage img;
     QPixmap pm;
+    int idcam;
+    Config *conf;
+
+private slots :
+    void recupFromCons(int cam);
 
 public :
 
     Camera();
     virtual void run();
-    void connecter(int);
+    bool connecter();
+
 
 signals :
     virtual void emSig2(QImage);

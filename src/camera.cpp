@@ -26,14 +26,36 @@ static QImage IplImage2QImage(const IplImage *iplImage)//fonction pour convertir
 
 
 
-void Camera::connecter(int idcam)
+bool Camera::connecter()
 {
-    camera = cvCaptureFromCAM(idcam);
+
+    connect(conf,SIGNAL(emsigConf(int)),this,SLOT(recupFromCons(int)));
+    cout<<"idcam :"<<idcam<<endl;
+    QMessageBox box;
+
+
+    camera = cvCaptureFromCAM(idcam-1);
+
+    if (!camera) {
+        box.setText("Verifier votre webcam");
+        box.exec();
+        cout<<"idcam :"<<idcam<<endl;
+        return 1;
+    }
+    else
+        return 0;
+
+}
+void Camera::recupFromCons(int cam)
+{
+idcam=cam;
+cout<<"slot :"<<idcam<<endl;
+cvReleaseCapture(&camera);
 }
 
 Camera::Camera()
 {
-
+    conf = new Config;
 }
 
 void Camera::run()
@@ -46,6 +68,7 @@ void Camera::run()
         img=IplImage2QImage(image);//convertir IplImage en QImage
         emit emSig2(img);
     }
+
 }
 
 

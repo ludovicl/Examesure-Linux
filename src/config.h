@@ -10,6 +10,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include <QFileDialog>
+#include <iostream>
+using namespace std;
 #include <QMessageBox>
 #include <QWidget>
 

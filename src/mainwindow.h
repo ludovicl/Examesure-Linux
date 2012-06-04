@@ -29,11 +29,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
 private slots:
     void on_demarrer_clicked();
 
     void afficheCam(QImage);
-    void recupFromCons(int cam, int);
+
     void on_actionConfiguration_avanc_e_triggered();
 
 
@@ -41,8 +42,9 @@ private slots:
 private:
     ThreadAcquerir *tAcqu;
     Camera *cam;
-    Config conf;
+    Config *conf;
     Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H

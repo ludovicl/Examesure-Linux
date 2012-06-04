@@ -18,42 +18,37 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
+    conf = new Config;
+
     Rs232 *rs=Rs232::getInstance ();
 
     tAcqu=new ThreadAcquerir("interne");
 
     tAcqu->start();
 
-    int idcam=0;
-
-    connect(&conf,SIGNAL(emsigConf(int)),this,SLOT(recupFromCons(int, idcam)));
-
-
-
-    if(idcam!=0)
-    {
-    cam= new Camera();
-    cam->connecter(idcam-1);//définir la camera en fonction du combobox de config
-    cam->start();
-    connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
-    }
-
-
+//    idcam=0;
     connect(tAcqu,SIGNAL(emSig(QString)),ui->labelTempInt,SLOT(setText(QString)));
 
+
+
+        cam= new Camera();
+
+        if(cam->connecter()!=1)//verifier si la camera est correctement co
+        {
+            cam->start();
+            connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
+        }
+
 }
+
+
 
 void MainWindow::afficheCam(QImage image)
 {
     ui->labelCam->setPixmap(QPixmap::fromImage(image));
 }
 
-void MainWindow::recupFromCons(int valDuSig, int paraWin)
-{
-    paraWin=valDuSig;
-}
 
 
 MainWindow::~MainWindow()
@@ -127,7 +122,7 @@ void MainWindow::on_demarrer_clicked()
 void MainWindow::on_actionConfiguration_avanc_e_triggered()
 {
 
-    conf.show();
+    conf->show();
 }
 
 
