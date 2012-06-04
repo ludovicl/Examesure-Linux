@@ -40,6 +40,7 @@ private:
     Rs232& operator= (const Rs232&);
 
     int id_tty;
+    int idFour;
 
     int taille;
     char * buffer;

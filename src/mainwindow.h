@@ -33,7 +33,7 @@ private slots:
     void on_demarrer_clicked();
 
     void afficheCam(QImage);
-    void recupFromCons(int cam);
+    void recupFromCons(int cam, int);
     void on_actionConfiguration_avanc_e_triggered();
 
 

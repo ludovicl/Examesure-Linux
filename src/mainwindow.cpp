@@ -26,19 +26,20 @@ MainWindow::MainWindow(QWidget *parent) :
 
     tAcqu->start();
 
-    int idcam;
+    int idcam=0;
 
-    connect(&conf,SIGNAL(emsigConf(int)),this,SLOT(recupFromCons(int)));
-
-//    cout<<idcam<<endl;
-//    if(conf->comboWebcam->currentIndex()==0)
+    connect(&conf,SIGNAL(emsigConf(int)),this,SLOT(recupFromCons(int, idcam)));
 
 
+
+    if(idcam!=0)
+    {
     cam= new Camera();
-    cam->connecter(idcam);
+    cam->connecter(idcam-1);//définir la camera en fonction du combobox de config
     cam->start();
-
     connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
+    }
+
 
     connect(tAcqu,SIGNAL(emSig(QString)),ui->labelTempInt,SLOT(setText(QString)));
 
@@ -49,9 +50,9 @@ void MainWindow::afficheCam(QImage image)
     ui->labelCam->setPixmap(QPixmap::fromImage(image));
 }
 
-void MainWindow::recupFromCons(int cam)
+void MainWindow::recupFromCons(int valDuSig, int paraWin)
 {
-   cout<<cam<<endl;
+    paraWin=valDuSig;
 }
 
 

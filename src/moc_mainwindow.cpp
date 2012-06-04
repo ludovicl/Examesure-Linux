@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Sat Jun 2 20:39:07 2012
+** Created: Sun Jun 3 12:17:20 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -33,15 +33,15 @@ static const uint qt_meta_data_MainWindow[] = {
  // slots: signature, parameters, type, tag, flags
       12,   11,   11,   11, 0x08,
       34,   11,   11,   11, 0x08,
-      57,   53,   11,   11, 0x08,
-      76,   11,   11,   11, 0x08,
+      58,   53,   11,   11, 0x08,
+      81,   11,   11,   11, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0on_demarrer_clicked()\0"
-    "afficheCam(QImage)\0cam\0recupFromCons(int)\0"
+    "afficheCam(QImage)\0cam,\0recupFromCons(int,int)\0"
     "on_actionConfiguration_avanc_e_triggered()\0"
 };
 
@@ -53,7 +53,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->on_demarrer_clicked(); break;
         case 1: _t->afficheCam((*reinterpret_cast< QImage(*)>(_a[1]))); break;
-        case 2: _t->recupFromCons((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 2: _t->recupFromCons((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 3: _t->on_actionConfiguration_avanc_e_triggered(); break;
         default: ;
         }
