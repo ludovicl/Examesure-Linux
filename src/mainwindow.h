@@ -38,9 +38,9 @@ private slots:
     void on_actionConfiguration_avanc_e_triggered();
 
 
-
 private:
     ThreadAcquerir *tAcqu;
+    int idcam;
     Camera *cam;
     Config *conf;
     Ui::MainWindow *ui;

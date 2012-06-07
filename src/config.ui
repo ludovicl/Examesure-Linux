@@ -416,10 +416,10 @@
      <double>100.000000000000000</double>
     </property>
     <property name="singleStep">
-     <double>1.000000000000000</double>
+     <double>0.100000000000000</double>
     </property>
     <property name="value">
-     <double>0.000000000000000</double>
+     <double>1.000000000000000</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="spinCoefExt2">
@@ -437,12 +437,18 @@
     <property name="maximum">
      <double>100.000000000000000</double>
     </property>
+    <property name="singleStep">
+     <double>0.100000000000000</double>
+    </property>
+    <property name="value">
+     <double>1.000000000000000</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="spinCoefExt3">
     <property name="geometry">
      <rect>
       <x>141</x>
-      <y>137</y>
+      <y>131</y>
       <width>63</width>
       <height>20</height>
      </rect>
@@ -452,6 +458,12 @@
     </property>
     <property name="maximum">
      <double>100.000000000000000</double>
+    </property>
+    <property name="singleStep">
+     <double>0.100000000000000</double>
+    </property>
+    <property name="value">
+     <double>1.000000000000000</double>
     </property>
    </widget>
   </widget>
@@ -533,6 +545,12 @@
    <property name="maximum">
     <double>100.000000000000000</double>
    </property>
+   <property name="singleStep">
+    <double>0.100000000000000</double>
+   </property>
+   <property name="value">
+    <double>1.000000000000000</double>
+   </property>
   </widget>
   <widget class="QLabel" name="label_13">
    <property name="geometry">
@@ -589,6 +607,12 @@
    <property name="maximum">
     <double>100.000000000000000</double>
    </property>
+   <property name="singleStep">
+    <double>0.100000000000000</double>
+   </property>
+   <property name="value">
+    <double>1.000000000000000</double>
+   </property>
   </widget>
   <widget class="QDoubleSpinBox" name="spinCoefRef1">
    <property name="geometry">
@@ -604,6 +628,12 @@
    </property>
    <property name="maximum">
     <double>100.000000000000000</double>
+   </property>
+   <property name="singleStep">
+    <double>0.100000000000000</double>
+   </property>
+   <property name="value">
+    <double>1.000000000000000</double>
    </property>
   </widget>
   <widget class="QFrame" name="frame_4">

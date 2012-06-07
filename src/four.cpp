@@ -16,7 +16,6 @@ Four::Four()
     cout<<"Un objet Four"<<endl;
 }
 
-
 void Four::definirTemp(QString temp)
 {
     usleep(200);

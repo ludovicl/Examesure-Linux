@@ -27,16 +27,12 @@ private :
     QImage img;
     QPixmap pm;
     int idcam;
-    Config *conf;
-
-private slots :
-    void recupFromCons(int cam);
 
 public :
-
+    ~Camera();
     Camera();
     virtual void run();
-    bool connecter();
+    bool connecter(int id);
 
 
 signals :

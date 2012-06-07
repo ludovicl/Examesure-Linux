@@ -14,7 +14,9 @@
 using namespace std;
 #include <QMessageBox>
 #include <QWidget>
+#include <fstream>
 
+using namespace std;
 namespace Ui {
 class Config;
 }

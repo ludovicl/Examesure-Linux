@@ -12,33 +12,38 @@
 #include "ui_mainwindow.h"
 #include "config.h"
 #include "ui_config.h"
-
+extern int combocam;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    conf = new Config;
+    conf = new Config();
+    cam= new Camera();
 
     Rs232 *rs=Rs232::getInstance ();
 
     tAcqu=new ThreadAcquerir("interne");
 
     tAcqu->start();
+    cout<<"Application lancée"<<endl;
 
-//    idcam=0;
     connect(tAcqu,SIGNAL(emSig(QString)),ui->labelTempInt,SLOT(setText(QString)));
 
 
 
-        cam= new Camera();
+    idcam=combocam;
 
-        if(cam->connecter()!=1)//verifier si la camera est correctement co
-        {
-            cam->start();
-            connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
-        }
+
+    cout<<"Combocam :"<<combocam<<endl;
+    if(idcam!=0)
+    {
+        cam->connecter(-1);
+        cam->start();
+        connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
+    }
+
 
 }
 
