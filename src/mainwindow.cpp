@@ -20,8 +20,63 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     conf = new Config();
-    cam= new Camera();
 
+
+    ifstream fichier(".examesure.cfg", ios::in);  // on ouvre le fichier en lecture
+
+    if(fichier)  // si l'ouverture a réussi
+    {
+        string contenuFichier;  // déclaration d'une chaîne qui contiendra la ligne lue
+
+        fichier>>contenuFichier>>contenuFichier;
+        adressFour=contenuFichier;
+        fichier>>contenuFichier>>contenuFichier;
+        baudFour=contenuFichier;
+        fichier>>contenuFichier>>contenuFichier;
+        idcam = atoi(contenuFichier.c_str());//convertir string en int
+        fichier>>contenuFichier>>contenuFichier;
+        lienPhotos=contenuFichier;
+        fichier>>contenuFichier>>contenuFichier;
+        checkBoxCam=contenuFichier.c_str();
+        fichier>>contenuFichier>>contenuFichier;
+        stab=atof(contenuFichier.c_str());
+        fichier>>contenuFichier>>contenuFichier;
+        coefRef1=atof(contenuFichier.c_str());
+        fichier>>contenuFichier>>contenuFichier;
+        coefRef2=atof(contenuFichier.c_str());
+        fichier>>contenuFichier>>contenuFichier;
+        coefRef3=atof(contenuFichier.c_str());
+        fichier>>contenuFichier>>contenuFichier;
+        coefExt1=atof(contenuFichier.c_str());
+        fichier>>contenuFichier>>contenuFichier;
+        coefExt2=atof(contenuFichier.c_str());
+        fichier>>contenuFichier>>contenuFichier;
+        coefExt3=atof(contenuFichier.c_str());
+
+        cout<<"idcam :"<<idcam<<endl;
+        cout<<"lien photos : "<<lienPhotos<<endl;
+        cout<<"checkbox : "<<checkBoxCam<<endl;
+        cout<<"adresse du four : "<<adressFour<<endl;
+        cout<<"vitesse du four : "<<baudFour<<endl;
+        cout<<"stabilité : "<<stab<<endl;
+        cout<<"coefficient reference 1 : "<<coefRef1<<endl;
+        cout<<"coefficient reference 2 : "<<coefRef2<<endl;
+        cout<<"coefficient reference 3 : "<<coefRef3<<endl;
+        cout<<"coefficient externe 1 : "<<coefExt1<<endl;
+        cout<<"coefficient externe 2 : "<<coefExt2<<endl;
+        cout<<"coefficient externe 3 : "<<coefExt3<<endl;
+
+        fichier.close();  // on ferme le fichier
+    }
+    else
+    {
+        cerr << "Probléme pendant la lecture du fichier de configuration" << endl;
+    }
+
+
+
+    cam= new Camera();
+    rs = new Rs232;
     Rs232 *rs=Rs232::getInstance ();
 
     tAcqu=new ThreadAcquerir("interne");
@@ -33,16 +88,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-    idcam=combocam;
 
 
-    cout<<"Combocam :"<<combocam<<endl;
-    if(idcam!=0)
-    {
-        cam->connecter(-1);
-        cam->start();
-        connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
-    }
+
+        cout<<"Combocam :"<<combocam<<endl;
+        if((idcam!=0) &&(cam->connecter(idcam-1)==0))
+        {
+            cam->start();
+            connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
+        }
+
 
 
 }

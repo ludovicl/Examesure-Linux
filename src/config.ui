@@ -116,7 +116,7 @@
      </font>
     </property>
     <property name="text">
-     <string/>
+     <string>/home</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox">
@@ -175,17 +175,17 @@
    </property>
    <item>
     <property name="text">
+     <string>9600</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>2400</string>
     </property>
    </item>
    <item>
     <property name="text">
      <string>4800</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>9600</string>
     </property>
    </item>
    <item>

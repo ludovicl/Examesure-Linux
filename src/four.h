@@ -9,21 +9,19 @@
 //-------------------------------------------------------
 #ifndef FOUR_H
 #define FOUR_H
-
-#include "sonde.h"
-#include "rs232.h"
 #include <iostream>
 using namespace std;
 #include <stdio.h>
+#include "rs232.h"
 class Four
 {
 private :
-    int id;
-    int vitesse;
+    static int id;
+   static int vitesse;
 
 public :
 
-    Rs232 *rs;
+
     Four();
     void definirTemp(QString);
 

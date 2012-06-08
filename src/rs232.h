@@ -39,6 +39,7 @@ private:
     Rs232(const Rs232&);
     Rs232& operator= (const Rs232&);
 
+    string vitesseFour;
     int id_tty;
     int idFour;
 

@@ -16,6 +16,7 @@ Rs232* Rs232::getInstance ()
 {
     if (Rs232::rs232 == NULL)
     {
+
         Rs232::rs232 = new Rs232();
     }
 
@@ -27,6 +28,9 @@ Rs232::Rs232()
 
 
     cout<<"Un objet entree"<<endl;
+
+
+    system("stty -F /dev/ttyUSB0 9600");
 
     id_tty=open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_NONBLOCK); //
     if (id_tty < 0 )
@@ -77,12 +81,15 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
     strcpy(buffer, data.toStdString().c_str() ); // convertie le string en char*
     write(id_tty, buffer ,data.size()); //envoi au port serie
 
+    free buffer;//erreur
+
     usleep(50);
     for(int nb=0;nb<15;nb++)
     {
         read(id_tty,buff+nb, 1);//lire sur la liaison caractère parcaractère
         if(buff[nb]=='\r')//lire jusqu'au caractère \r
         {
+            buff[nb]==0;
             break;//sortir de la boucle
         }
     }

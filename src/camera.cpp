@@ -29,19 +29,21 @@ static QImage IplImage2QImage(const IplImage *iplImage)//fonction pour convertir
 bool Camera::connecter(int id)
 {
 
-        QMessageBox box;
-
+    QMessageBox box;
 
     camera = cvCaptureFromCAM(id);
 
-        if (!camera) {
-            box.setText("Verifier votre webcam");
-            box.exec();
-            cout<<"idcam :"<<idcam<<endl;
-            return 1;
-        }
-        else
-    return 0;
+    if (!camera) {
+        cvReleaseCapture(&camera);
+        box.setText("Verifier votre webcam");
+        box.exec();
+        cout<<"idcam :"<<idcam<<endl;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 Camera::Camera()
@@ -51,7 +53,7 @@ Camera::Camera()
 
 Camera::~Camera()
 {
-//    cvReleaseCapture(&camera);
+    cvReleaseCapture(&camera);
 }
 
 

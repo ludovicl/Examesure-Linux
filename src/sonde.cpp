@@ -11,7 +11,7 @@
 
 Sonde::Sonde(string ty)
 {
-    //Sonde::mutex.unlock();
+
     type = ty;
     cout<<"Un objet sonde"<<endl;
 }

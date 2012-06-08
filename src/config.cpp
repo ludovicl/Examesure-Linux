@@ -17,7 +17,7 @@ Config::Config(QWidget *parent) :
     cout<<"Configuration crée !"<<endl;
     ui->setupUi(this);
 
-    ofstream fichier(".examesure.cfg",ios::app);
+    ifstream fichier(".examesure.cfg");
 
     if(fichier)// si le fichier existe
     {
@@ -28,18 +28,18 @@ Config::Config(QWidget *parent) :
         system("touch .examesure.cfg");// créer le fichier
         ofstream fichier(".examesure.cfg", ios::app);
 
-        fichier<<"webcam "<<ui->comboWebcam->currentIndex()<<" finwebcam"<<endl;
-        fichier<<"lienphoto "<<ui->labelLien->text().toStdString()<<" finlienphoto \r"<<endl;
-        fichier<<"checkbox "<<ui->checkBox->isTristate()<<" fincheckbox"<<endl;
-        fichier<<"adressefour "<<ui->spinAddr->text().toStdString()<<" finadressefour"<<endl;
-        fichier<<"vitessefour "<<ui->comboVitesses->currentText().toStdString()<<" finvitessefour"<<endl;
-        fichier<<"stabilite "<<ui->spinAddr->text().toStdString()<<" finstabilite"<<endl;
-        fichier<<"refcoef1 "<<ui->spinCoefRef1->text().toStdString()<<" finrefcoef1"<<endl;
-        fichier<<"refcoef2 "<<ui->spinCoefRef2->text().toStdString()<<" finrefcoef2"<<endl;
-        fichier<<"refcoef3 "<<ui->spinCoefRef3->text().toStdString()<<" finrefcoef3"<<endl;
-        fichier<<"extcoef1 "<<ui->spinCoefExt1->text().toStdString()<<" finextcoef1"<<endl;
-        fichier<<"extcoef2 "<<ui->spinCoefExt2->text().toStdString()<<" finextcoef2"<<endl;
-        fichier<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<" finextcoef3"<<endl;
+        fichier<<"adressefour "<<ui->spinAddr->text().toStdString()<<endl;
+        fichier<<"vitessefour "<<ui->comboVitesses->currentText().toStdString()<<endl;
+        fichier<<"webcam "<<ui->comboWebcam->currentIndex()<<endl;
+        fichier<<"lienphoto "<<ui->labelLien->text().toStdString()<<endl;
+        fichier<<"checkbox "<<ui->checkBox->isChecked()<<endl;
+        fichier<<"stabilite "<<ui->spinAddr->text().toStdString()<<endl;
+        fichier<<"refcoef1 "<<ui->spinCoefRef1->text().toStdString()<<endl;
+        fichier<<"refcoef2 "<<ui->spinCoefRef2->text().toStdString()<<endl;
+        fichier<<"refcoef3 "<<ui->spinCoefRef3->text().toStdString()<<endl;
+        fichier<<"extcoef1 "<<ui->spinCoefExt1->text().toStdString()<<endl;
+        fichier<<"extcoef2 "<<ui->spinCoefExt2->text().toStdString()<<endl;
+        fichier<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<endl;
         fichier.close();  // fermer le fichier
     }
 
@@ -69,18 +69,18 @@ void Config::on_pushValider_clicked()
 
     ofstream fichier(".examesure.cfg", ios::out | ios::trunc);
 
-    fichier<<"webcam "<<ui->comboWebcam->currentIndex()<<" finwebcam"<<endl;
-    fichier<<"lienphoto "<<ui->labelLien->text().toStdString()<<" finlienphoto \r"<<endl;
-    fichier<<"checkbox "<<ui->checkBox->isTristate()<<" fincheckbox"<<endl;
-    fichier<<"adressefour "<<ui->spinAddr->text().toStdString()<<" finadressefour"<<endl;
-    fichier<<"vitessefour "<<ui->comboVitesses->currentText().toStdString()<<" finvitessefour"<<endl;
-    fichier<<"stabilite "<<ui->spinAddr->text().toStdString()<<" finstabilite"<<endl;
-    fichier<<"refcoef1 "<<ui->spinCoefRef1->text().toStdString()<<" finrefcoef1"<<endl;
-    fichier<<"refcoef2 "<<ui->spinCoefRef2->text().toStdString()<<" finrefcoef2"<<endl;
-    fichier<<"refcoef3 "<<ui->spinCoefRef3->text().toStdString()<<" finrefcoef3"<<endl;
-    fichier<<"extcoef1 "<<ui->spinCoefExt1->text().toStdString()<<" finextcoef1"<<endl;
-    fichier<<"extcoef2 "<<ui->spinCoefExt2->text().toStdString()<<" finextcoef2"<<endl;
-    fichier<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<" finextcoef3"<<endl;
+    fichier<<"adressefour "<<ui->spinAddr->text().toStdString()<<endl;
+    fichier<<"vitessefour "<<ui->comboVitesses->currentText().toStdString()<<endl;
+    fichier<<"webcam "<<ui->comboWebcam->currentIndex()<<endl;
+    fichier<<"lienphoto "<<ui->labelLien->text().toStdString()<<endl;
+    fichier<<"checkbox "<<ui->checkBox->isChecked()<<endl;
+    fichier<<"stabilite "<<ui->spinAddr->text().toStdString()<<endl;
+    fichier<<"refcoef1 "<<ui->spinCoefRef1->text().toStdString()<<endl;
+    fichier<<"refcoef2 "<<ui->spinCoefRef2->text().toStdString()<<endl;
+    fichier<<"refcoef3 "<<ui->spinCoefRef3->text().toStdString()<<endl;
+    fichier<<"extcoef1 "<<ui->spinCoefExt1->text().toStdString()<<endl;
+    fichier<<"extcoef2 "<<ui->spinCoefExt2->text().toStdString()<<endl;
+    fichier<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<endl;
     fichier.close();  // fermer le fichier
 
 
