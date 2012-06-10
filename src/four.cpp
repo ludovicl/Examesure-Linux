@@ -12,16 +12,15 @@
 Four::Four()
 {
 
-
-    Rs232 *rs=Rs232::getInstance ();
     cout<<"Un objet Four"<<endl;
 }
 
 void Four::definirTemp(QString temp)
 {
-    usleep(200);
-//    rs->ecrire(temp, rs->get_id_tty());
-    //cout<<"ici four"<<endl;
+
+    Rs232 *rs=Rs232::getInstance ();
+    rs->ecrire(temp, rs->get_id_tty());
+    cout<<"ici four"<<endl;
 }
 
 

@@ -11,6 +11,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
 #include <QMessageBox>
 #include "sonde.h"
 #include "etalonnage.h"
@@ -41,7 +42,8 @@ private slots:
 private:
     ThreadAcquerir *tAcqu;
     int idcam;
-    string lienPhotos, adressFour, baudFour;
+    string lienPhotos, baudFour;
+    QString adressFour;
     bool checkBoxCam;
     float coefExt1, coefExt2, coefExt3, coefRef1, coefRef2, coefRef3, stab;
     Camera *cam;

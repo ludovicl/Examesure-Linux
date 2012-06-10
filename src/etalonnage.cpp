@@ -10,12 +10,16 @@
 #include "etalonnage.h"
 
 
-Etalonnage::Etalonnage()
+Etalonnage::Etalonnage(float stabFromCfg, Sonde ref)
 {
+    stabilite=stabFromCfg;
     cout<<"Un objet etalonnage"<<endl;
     fr = new Four;
-    sdRef = new Sonde("reference");
-    sdInt = new Sonde("interne");
+//    ref= new Sonde("reference");
+//    sdRef = new Sonde("reference",ref->coefficient1,ref->coefficient2, ref->coefficient3);
+//    sdRef =  new Sonde(ref);
+//    sdRef = new Sonde("reference");
+//    sdInt = new Sonde("interne");
 }
 
 float Etalonnage::get_tempMini()
@@ -93,7 +97,7 @@ void Etalonnage::run()
         emit emSigCons(str.setNum(tabTemp.at(i)));
         float tmpTempo=sdRef->acquerirTemp().toFloat();
 
-        if((tmpTempo>(tabTemp.at(i)+0.01)) && (tmpTempo<(tabTemp.at(i)-0.01)) )
+        if((tmpTempo>(tabTemp.at(i)+stabilite)) && (tmpTempo<(tabTemp.at(i)-stabilite)) )
         {
             sleep(200);
             tmpTempo=sdRef->acquerirTemp().toFloat();

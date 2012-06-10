@@ -33,11 +33,14 @@ private :
     Four *fr;
     Sonde *sdRef;
     Sonde *sdInt;
+    Sonde *sdExt;
+    float stabilite;
+
 signals:
     virtual void emSigCons(QString);
 
 public :
-    Etalonnage();
+    Etalonnage(float, Sonde ref);
 
     bool testStabilite(vector<float>);
 

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'config.ui'
 **
-** Created: Fri Jun 8 11:32:58 2012
+** Created: Sun Jun 10 19:53:01 2012
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

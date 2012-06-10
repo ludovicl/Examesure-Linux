@@ -19,9 +19,13 @@ class Sonde
         QString temperature;
         string type;
 
-    public :
+        //coeff1=a, coeff2=b, coeff3=c dans une equation a+bx+cx²
 
-        Sonde(string);
+    public :
+        float coefficient1, coefficient2, coefficient3;
+
+        Sonde(string letypedesonde);
+        Sonde(string type,float c1, float c2,float c3);
         void set_type(string);
         string get_type();
         float get_temp();
@@ -29,7 +33,7 @@ class Sonde
 };
 
 
-class ThreadAcquerir : public QThread  //lire la temperature du type  : public QThread
+class ThreadAcquerir : public QThread
 {
  Q_OBJECT
 

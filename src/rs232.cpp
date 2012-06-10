@@ -11,15 +11,28 @@
 
 
 Rs232* Rs232::rs232 = NULL;
+string Rs232::vitesseFour="0";
+QString Rs232::idFour="0";
 
 Rs232* Rs232::getInstance ()
 {
     if (Rs232::rs232 == NULL)
     {
-
-        Rs232::rs232 = new Rs232();
+        Rs232::rs232 = new Rs232;
     }
+    return Rs232::rs232;
+}
 
+Rs232* Rs232::getInstance (QString id, string baud)
+{
+    Rs232::vitesseFour=baud;
+    Rs232::idFour=id;
+
+    if (Rs232::rs232 == NULL)
+    {
+        Rs232::rs232 = new Rs232;
+
+    }
     return Rs232::rs232;
 }
 
@@ -30,7 +43,7 @@ Rs232::Rs232()
     cout<<"Un objet entree"<<endl;
 
 
-    system("stty -F /dev/ttyUSB0 9600");
+    system("stty -F /dev/ttyUSB0 "+atoi(Rs232::vitesseFour.c_str()));
 
     id_tty=open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_NONBLOCK); //
     if (id_tty < 0 )
@@ -43,7 +56,7 @@ Rs232::Rs232()
         cout<<"On est co "<<endl;
     }
 
-    QString data = "$1WVAR8 3 \r";
+    QString data = "$"+idFour+"WVAR8 3 \r";
 
 
     const char* buffer= data.toStdString().c_str();
@@ -57,7 +70,7 @@ Rs232::Rs232()
 
 void Rs232::ecrire(QString para, int id_tty)
 {
-    QString data = "$1WVAR0 "+para+"\r";
+    QString data = "$"+Rs232::idFour+"WVAR0 "+para+"\r";
     const char* buffer= data.toStdString().c_str();
 
     mutex.lock();
@@ -73,7 +86,7 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
 
     mutex.lock();
 
-    QString data = "$1RVAR"+para+" \r";
+    QString data = "$"+idFour+"VAR"+para+" \r";
     taille = data.size()+1; // recupere la taille de la donnée
 
     char * buffer = new char[ taille ]; // pour convertir le string en char*
@@ -81,7 +94,7 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
     strcpy(buffer, data.toStdString().c_str() ); // convertie le string en char*
     write(id_tty, buffer ,data.size()); //envoi au port serie
 
-    free buffer;//erreur
+    delete buffer;
 
     usleep(50);
     for(int nb=0;nb<15;nb++)

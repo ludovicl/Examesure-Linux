@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
         string contenuFichier;  // déclaration d'une chaîne qui contiendra la ligne lue
 
         fichier>>contenuFichier>>contenuFichier;
-        adressFour=contenuFichier;
+        adressFour=QString::fromStdString ( contenuFichier);
         fichier>>contenuFichier>>contenuFichier;
         baudFour=contenuFichier;
         fichier>>contenuFichier>>contenuFichier;
@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
         cout<<"idcam :"<<idcam<<endl;
         cout<<"lien photos : "<<lienPhotos<<endl;
         cout<<"checkbox : "<<checkBoxCam<<endl;
-        cout<<"adresse du four : "<<adressFour<<endl;
+        cout<<"adresse du four : "<<adressFour.toStdString()<<endl;
         cout<<"vitesse du four : "<<baudFour<<endl;
         cout<<"stabilité : "<<stab<<endl;
         cout<<"coefficient reference 1 : "<<coefRef1<<endl;
@@ -76,8 +76,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     cam= new Camera();
-    rs = new Rs232;
-    Rs232 *rs=Rs232::getInstance ();
+    rs = new Rs232();
+    Rs232 *rs=Rs232::getInstance (adressFour, baudFour);
 
     tAcqu=new ThreadAcquerir("interne");
 
@@ -91,12 +91,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-        cout<<"Combocam :"<<combocam<<endl;
-        if((idcam!=0) &&(cam->connecter(idcam-1)==0))
-        {
-            cam->start();
-            connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
-        }
+    cout<<"Combocam :"<<combocam<<endl;
+    if((idcam!=0) &&(cam->connecter(idcam-1)==0))
+    {
+        cam->start();
+        connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
+    }
 
 
 
@@ -144,14 +144,20 @@ void MainWindow::on_demarrer_clicked()
 
     if((ui->spinInter->text().toFloat())==0)
     {
-        box.setText("L'INTERVALLE NE PEUT PAS ETRE DE ZERO... ><' ");
+        box.setText("L'INTERVALLE NE PEUT PAS ETRE DE ZERO");
         box.exec();
         return;
     }
 
-
     Etalonnage *et;
-    et = new Etalonnage();
+
+        Sonde sdRef("reference");
+//        Sonde sdInt("interne");
+//        Sonde sdExt("externe");
+//    Sonde *sdRef= new Sonde("reference");
+//    Sonde *sdInt= new Sonde("interne");
+//    Sonde *sdExt = new Sonde("externe");
+//    et = new Etalonnage(stab, sdRef);
 
     et->set_intervalle(ui->spinInter->text().toFloat());
 

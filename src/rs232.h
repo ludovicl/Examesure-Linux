@@ -25,7 +25,7 @@ public :
     int get_id_tty();
     Rs232();
     static Rs232* getInstance();
-
+    static Rs232* getInstance(QString , string);
 
 signals:
     void emSig2(QString str);
@@ -39,9 +39,9 @@ private:
     Rs232(const Rs232&);
     Rs232& operator= (const Rs232&);
 
-    string vitesseFour;
+    static string vitesseFour;
     int id_tty;
-    int idFour;
+    static QString idFour;
 
     int taille;
     char * buffer;
