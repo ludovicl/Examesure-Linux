@@ -17,7 +17,6 @@ Four::Four()
 
 void Four::definirTemp(QString temp)
 {
-
     Rs232 *rs=Rs232::getInstance ();
     rs->ecrire(temp, rs->get_id_tty());
     cout<<"ici four"<<endl;

@@ -35,7 +35,8 @@ private slots:
     void on_pushAnnuler_clicked();
 
 signals :
-    void emsigConf(int);
+
+    void emSigDel();
 
 private:
     Ui::Config *ui;

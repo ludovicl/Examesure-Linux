@@ -29,10 +29,10 @@ QString Sonde::acquerirTemp() //lire la temperature du type
 {
     char* voie;
     Rs232 *rs=Rs232::getInstance ();
+
     if (type == "externe")
     {
         voie="105";
-
     }
 
     if (type == "reference")
@@ -42,10 +42,18 @@ QString Sonde::acquerirTemp() //lire la temperature du type
 
     if (type == "interne")
     {
+        coefficient1=0;
+        coefficient2=1;
+        coefficient3=0;
         voie="100";
     }
 
-    return	rs->recevoir(voie,rs->get_id_tty());
+    float valeur = rs->recevoir(voie,rs->get_id_tty()).toFloat();
+
+    valeur=coefficient1+(valeur*coefficient2)+coefficient3*(valeur*valeur);
+    QString strAReturn;
+    strAReturn.setNum(valeur);
+    return  strAReturn;
 }
 void Sonde::set_type(string para)
 {
@@ -57,6 +65,21 @@ string Sonde::get_type()
     return type;
 }
 
+float Sonde::getCoef1()
+{
+
+    return coefficient1;
+}
+
+float Sonde::getCoef2()
+{
+    return coefficient2;
+}
+
+float Sonde::getCoef3()
+{
+    return coefficient3;
+}
 ThreadAcquerir::ThreadAcquerir(string cons)
 {
 
@@ -66,14 +89,10 @@ ThreadAcquerir::ThreadAcquerir(string cons)
 
 void ThreadAcquerir::run()
 {
-
-
     while(true)
     {
         sleep(2);
         emit emSig(sd->acquerirTemp());
-
     }
-
 }
 

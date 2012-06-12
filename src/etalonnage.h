@@ -12,9 +12,12 @@
 
 #include <iostream>
 using namespace std;
-#include "mainwindow.h"
+//#include "mainwindow.h"
+#include "sonde.h"
 #include <vector>
 #include "four.h"
+#include <QMessageBox>
+#include "camera.h"
 #include <QtGui>
 #include <QSemaphore>
 #include <fstream>
@@ -32,17 +35,22 @@ private :
     vector<float>tabTempRecup;
     Four *fr;
     Sonde *sdRef;
+    bool checkBox;
+    int idcam;
+    string adresseLienPhotos;
+    //    Sonde sdRef;
     Sonde *sdInt;
     Sonde *sdExt;
     float stabilite;
 
 signals:
     virtual void emSigCons(QString);
+    virtual void emSigPrendPhoto();
 
 public :
-    Etalonnage(float, Sonde ref);
+    Etalonnage(float, Sonde, Sonde, Sonde, bool, string, int );
 
-    bool testStabilite(vector<float>);
+    bool testStabilite(vector<float>, float);
 
     float get_tempMini();
     void set_tempMini(float);

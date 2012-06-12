@@ -9,39 +9,46 @@
 //-------------------------------------------------------
 #ifndef SONDE_H
 #define SONDE_H
-
+ #include <QString>
 #include "rs232.h"
 
 class Sonde
 {
-    private :
+private :
 
-        QString temperature;
-        string type;
+    QString temperature;
+    string type;
 
-        //coeff1=a, coeff2=b, coeff3=c dans une equation a+bx+cx²
+    //coeff1=a, coeff2=b, coeff3=c dans une equation a+bx+cx²
+    float coefficient1, coefficient2, coefficient3;
+public :
 
-    public :
-        float coefficient1, coefficient2, coefficient3;
 
-        Sonde(string letypedesonde);
-        Sonde(string type,float c1, float c2,float c3);
-        void set_type(string);
-        string get_type();
-        float get_temp();
-        QString acquerirTemp();
+    Sonde(string letypedesonde);
+    Sonde(string type,float c1, float c2,float c3);
+
+    float getCoef1();
+    float getCoef2();
+    float getCoef3();
+
+    void set_type(string);
+    string get_type();
+
+    float get_temp();
+    QString acquerirTemp();
+
 };
 
 
 class ThreadAcquerir : public QThread
 {
- Q_OBJECT
+    Q_OBJECT
 
 public :
     ThreadAcquerir(string);
     virtual void run();
 
-    signals:
+signals:
     virtual void emSig(QString str);
 
 private :

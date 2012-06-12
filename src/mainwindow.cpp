@@ -10,9 +10,9 @@
 #include "mainwindow.h"
 #include "ui_config.h"
 #include "ui_mainwindow.h"
-#include "config.h"
+
 #include "ui_config.h"
-extern int combocam;
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     conf = new Config();
 
-
+    connect (conf,SIGNAL(emSigDel()),this,SLOT(delObjets()));
     ifstream fichier(".examesure.cfg", ios::in);  // on ouvre le fichier en lecture
 
     if(fichier)  // si l'ouverture a réussi
@@ -74,9 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
 
-
     cam= new Camera();
-    rs = new Rs232();
+
     Rs232 *rs=Rs232::getInstance (adressFour, baudFour);
 
     tAcqu=new ThreadAcquerir("interne");
@@ -87,21 +86,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(tAcqu,SIGNAL(emSig(QString)),ui->labelTempInt,SLOT(setText(QString)));
 
 
-
-
-
-
-    cout<<"Combocam :"<<combocam<<endl;
     if((idcam!=0) &&(cam->connecter(idcam-1)==0))
     {
         cam->start();
         connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
     }
-
-
-
+    else
+        delete cam;
 }
-
 
 
 void MainWindow::afficheCam(QImage image)
@@ -149,15 +141,17 @@ void MainWindow::on_demarrer_clicked()
         return;
     }
 
-    Etalonnage *et;
 
-        Sonde sdRef("reference");
-//        Sonde sdInt("interne");
-//        Sonde sdExt("externe");
-//    Sonde *sdRef= new Sonde("reference");
-//    Sonde *sdInt= new Sonde("interne");
-//    Sonde *sdExt = new Sonde("externe");
-//    et = new Etalonnage(stab, sdRef);
+
+    //    Sonde sdRef("reference", coefRef1, coefRef2, coefRef3);
+    //    Sonde sdExt("externe", coefExt1, coefExt2, coefExt3);
+    //    Sonde sdInt("interne");
+
+    sdRef = new Sonde("reference", coefRef1, coefRef2, coefRef3);
+    sdExt = new Sonde("externe", coefExt1, coefExt2, coefExt3);
+    sdInt=new Sonde("interne");
+
+    et = new Etalonnage(stab, *sdRef, *sdExt, *sdInt, checkBoxCam, lienPhotos, idcam);
 
     et->set_intervalle(ui->spinInter->text().toFloat());
 
@@ -168,7 +162,6 @@ void MainWindow::on_demarrer_clicked()
     et->remplir_tabTemp();
 
     vector<float>vec=et->get_tabTemp();
-
 
     ui->tableWidget->setRowCount( vec.size());
     for(int i = 0; i < (vec.size()); i++)
@@ -182,14 +175,39 @@ void MainWindow::on_demarrer_clicked()
     }
     et->start();
     connect(et,SIGNAL(emSigCons(QString)),ui->labelConsigne,SLOT(setText(QString)));
+
+
+    connect(et,SIGNAL(emSigPrendPhoto()),this,SLOT(prendrePhoto()));
+
 }
 
+void MainWindow::prendrePhoto()
+{
+    if((idcam!=0) &&(cam->connecter(idcam-1)==0)&& (checkBoxCam==true))
+    {
+        cam->enregistrer(lienPhotos);
+
+        cout<<"enregistrer ok !"<<endl;
+    }
+}
+
+void MainWindow::delObjets()
+{
+
+//    delete cam;
+//    delete conf;
+//    delete tAcqu;
+//    delete sdRef;
+//    delete sdExt;
+//    delete sdInt;
+}
 
 void MainWindow::on_actionConfiguration_avanc_e_triggered()
 {
 
     conf->show();
 }
+
 
 
 

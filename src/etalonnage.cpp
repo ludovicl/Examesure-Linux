@@ -10,16 +10,23 @@
 #include "etalonnage.h"
 
 
-Etalonnage::Etalonnage(float stabFromCfg, Sonde ref)
+Etalonnage::Etalonnage(float stabFromCfg, Sonde ref, Sonde ext, Sonde inte, bool check, string adresse, int _idCam)
 {
     stabilite=stabFromCfg;
     cout<<"Un objet etalonnage"<<endl;
     fr = new Four;
-//    ref= new Sonde("reference");
-//    sdRef = new Sonde("reference",ref->coefficient1,ref->coefficient2, ref->coefficient3);
-//    sdRef =  new Sonde(ref);
-//    sdRef = new Sonde("reference");
-//    sdInt = new Sonde("interne");
+    //    cam= new Camera(_cam);
+    idcam = _idCam;
+    //    sdRef= new Sonde(ref);
+
+    //      sdRef =ref;
+    //    float refCoef=ref.coefficient1;
+    sdRef = new Sonde("reference",ref.getCoef1(),ref.getCoef2(), ref.getCoef3());
+    sdExt = new Sonde("externe",ext.getCoef1(),ext.getCoef2(), ext.getCoef3());
+    sdInt = new Sonde("interne",inte.getCoef1(),inte.getCoef2(), inte.getCoef3());
+    //    sdExt =  new Sonde("externe");
+    //    sdRef = new Sonde("reference");
+    sdInt = new Sonde("interne");
 }
 
 float Etalonnage::get_tempMini()
@@ -84,6 +91,9 @@ void Etalonnage::run()
 {
     ofstream fichier("/home/ludovic/Bureau/test.txt", ios::out | ios::trunc);
 
+    QMessageBox box;
+    //    emit emSigPrendPhoto();
+
     bool stab;
     cout<<"dans les consignes"<<endl;
     for (int i=0; i<tabTemp.size();i++)//les consignes rentrées par l'opérateur
@@ -95,31 +105,47 @@ void Etalonnage::run()
         fr->definirTemp(str);//définie la temperature
 
         emit emSigCons(str.setNum(tabTemp.at(i)));
-        float tmpTempo=sdRef->acquerirTemp().toFloat();
+//        float tmpTempo=sdRef->acquerirTemp().toFloat();
 
-        if((tmpTempo>(tabTemp.at(i)+stabilite)) && (tmpTempo<(tabTemp.at(i)-stabilite)) )
-        {
-            sleep(200);
-            tmpTempo=sdRef->acquerirTemp().toFloat();
-        }
-        float tempIntTempo=sdInt->acquerirTemp().toFloat();
-        float tempRefTempo=sdRef->acquerirTemp().toFloat();
-        float newcons=tabTemp.at(i)+tempIntTempo-tempRefTempo;// calculer la nouvelle consigne
-        fr->definirTemp(str.setNum(newcons));//définie la temperature
-        emit emSigCons(str.setNum(newcons));
-        cout<<"temperatur envoyée :"<<str.toStdString()<<endl;
+
+//        while((tmpTempo>(tabTemp.at(i)+0.5)) && (tmpTempo<(tabTemp.at(i)-0.5)) )
+//        {
+//            sleep(200);
+//            tmpTempo=sdRef->acquerirTemp().toFloat();
+//        }
+
+//        float tempIntTempo=sdInt->acquerirTemp().toFloat();
+//        float tempRefTempo=sdRef->acquerirTemp().toFloat();
+//        float newcons=tabTemp.at(i)+tempIntTempo-tempRefTempo;// calculer la nouvelle consigne
+//        fr->definirTemp(str.setNum(newcons));//définie la temperature
+//        emit emSigCons(str.setNum(newcons));
+//        cout<<"temperatur envoyée :"<<str.toStdString()<<endl;
         stab = false;
         while(stab==false)
         {
-            for(int j=0; j<240; j++)//récupére 1 valeur tout les 3 sec jusqu'a 240 valeurs
+            for(int j=0; j<5; j++)//récupére 1 valeur tout les 3 sec jusqu'a 240 valeurs
             {
                 tabTempRecup.push_back(sdRef->acquerirTemp().toFloat());//récupére la temperature externe et la stock
                 sleep(1);
                 cout<<"DANS CONSIGNE : "<<sdRef->acquerirTemp().toFloat()<<endl;
             }
-            stab = testStabilite(tabTempRecup);
+            stab = testStabilite(tabTempRecup, stabilite);
         }
 
+        cout<<"idcam :"<<idcam<<endl;
+        if((checkBox==true)&&(idcam==0) || ((checkBox==false)&&(idcam!=0)))
+        {
+
+            box.setText("Les photos ne seront pas enregistrées ");
+            box.exec();
+            return;
+        }
+
+        if((checkBox==true)&&(idcam!=0))
+        {
+
+            emit emSigPrendPhoto();
+        }
         fichier<<"Reference : "<<endl;
         fichier<<i+1<<" : ";
         fichier<<sdRef->acquerirTemp().toFloat()<<endl;
@@ -132,19 +158,46 @@ void Etalonnage::run()
     }
 }
 
-bool Etalonnage::testStabilite(vector<float>tab)//
+bool Etalonnage::testStabilite(vector<float>tab, float stability)//
 {
     float max, min;
+    min=1000;
+    max=-1000;
+
+    int taille = tab.size();
+
+    cout<<"satabilité dans test dtab :"<<stability<<endl;
+
+    float median;
+
+    sort(tab.begin(), tab.end());
+
+    if (taille  % 2 == 0)
+    {
+        median = (tab[taille / 2 - 1] + tab[taille / 2]) / 2;
+    }
+    else
+    {
+        median = tab[taille / 2];
+    }
+
+    cout<<"median : "<<median<<endl;
+
+
 
     for (int i=0; i<tab.size();i++)
     {
-        if((tab.at(i)>max) && (tab.at(i)=!0))
+        if((tab.at(i)>max) && (tab.at(i)<median+5)&&(tab.at(i)>median-5))
             max=tab.at(i);
 
-        else if((tab.at(i)<min) && (tab.at(i)=!0))
+        if((tab.at(i)<min)&& (tab.at(i)<median+5) && (tab.at(i)>median-5))
             min=tab.at(i);
+
+        cout<<"min :"<<min<<" max :"<<max<<endl;
     }
-    if((max-min)<=0.2 )
+
+
+    if((max-min)<=stability )
     {
         return true;
         cout<<"ON EST STABLE"<<endl;

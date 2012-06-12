@@ -262,7 +262,7 @@
      <string>Stabilité :</string>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="spinCoefRef1_2">
+   <widget class="QDoubleSpinBox" name="spinStab">
     <property name="geometry">
      <rect>
       <x>149</x>
@@ -419,7 +419,7 @@
      <double>0.100000000000000</double>
     </property>
     <property name="value">
-     <double>1.000000000000000</double>
+     <double>0.000000000000000</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="spinCoefExt2">
@@ -463,7 +463,7 @@
      <double>0.100000000000000</double>
     </property>
     <property name="value">
-     <double>1.000000000000000</double>
+     <double>0.000000000000000</double>
     </property>
    </widget>
   </widget>
@@ -549,7 +549,7 @@
     <double>0.100000000000000</double>
    </property>
    <property name="value">
-    <double>1.000000000000000</double>
+    <double>0.000000000000000</double>
    </property>
   </widget>
   <widget class="QLabel" name="label_13">
@@ -633,7 +633,7 @@
     <double>0.100000000000000</double>
    </property>
    <property name="value">
-    <double>1.000000000000000</double>
+    <double>0.000000000000000</double>
    </property>
   </widget>
   <widget class="QFrame" name="frame_4">
@@ -684,11 +684,14 @@
   <widget class="QPushButton" name="pushAnnuler">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>300</x>
      <y>430</y>
      <width>91</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>Démarrer une série de mesure</string>
    </property>
    <property name="text">
     <string>Annuler</string>

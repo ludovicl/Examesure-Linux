@@ -33,7 +33,7 @@ Config::Config(QWidget *parent) :
         fichier<<"webcam "<<ui->comboWebcam->currentIndex()<<endl;
         fichier<<"lienphoto "<<ui->labelLien->text().toStdString()<<endl;
         fichier<<"checkbox "<<ui->checkBox->isChecked()<<endl;
-        fichier<<"stabilite "<<ui->spinAddr->text().toStdString()<<endl;
+        fichier<<"stabilite "<<ui->spinStab->text().toStdString()<<endl;
         fichier<<"refcoef1 "<<ui->spinCoefRef1->text().toStdString()<<endl;
         fichier<<"refcoef2 "<<ui->spinCoefRef2->text().toStdString()<<endl;
         fichier<<"refcoef3 "<<ui->spinCoefRef3->text().toStdString()<<endl;
@@ -74,7 +74,7 @@ void Config::on_pushValider_clicked()
     fichier<<"webcam "<<ui->comboWebcam->currentIndex()<<endl;
     fichier<<"lienphoto "<<ui->labelLien->text().toStdString()<<endl;
     fichier<<"checkbox "<<ui->checkBox->isChecked()<<endl;
-    fichier<<"stabilite "<<ui->spinAddr->text().toStdString()<<endl;
+    fichier<<"stabilite "<<ui->spinStab->text().toStdString()<<endl;
     fichier<<"refcoef1 "<<ui->spinCoefRef1->text().toStdString()<<endl;
     fichier<<"refcoef2 "<<ui->spinCoefRef2->text().toStdString()<<endl;
     fichier<<"refcoef3 "<<ui->spinCoefRef3->text().toStdString()<<endl;
@@ -83,12 +83,16 @@ void Config::on_pushValider_clicked()
     fichier<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<endl;
     fichier.close();  // fermer le fichier
 
-
+    qApp->quit();
+//    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 
     qApp->exit(1);
+
+    emit emSigDel();
+//    qApp->exec();
 }
 
 void Config::on_pushAnnuler_clicked()
 {
-
+     Config::close();
 }

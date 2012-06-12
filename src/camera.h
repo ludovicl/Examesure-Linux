@@ -16,6 +16,7 @@
 #include <QImage>
 #include <QPixmap>
 #include "config.h"
+#include <time.h>
 using namespace cv;
 class Camera : public QThread
 {
@@ -27,9 +28,12 @@ private :
     QImage img;
     QPixmap pm;
     int idcam;
+    static  int nbObCam;
 
 public :
+    void liberer();
     ~Camera();
+    void enregistrer(string);
     Camera();
     virtual void run();
     bool connecter(int id);

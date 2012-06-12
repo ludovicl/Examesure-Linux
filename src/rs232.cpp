@@ -42,8 +42,30 @@ Rs232::Rs232()
 
     cout<<"Un objet entree"<<endl;
 
+    if (Rs232::vitesseFour=="2400")
+    {
+        system("stty -F /dev/ttyUSB0 2400");
+        system("stty -F /dev/ttyUSB1 2400");
+    }
 
-    system("stty -F /dev/ttyUSB0 "+atoi(Rs232::vitesseFour.c_str()));
+    else if (Rs232::vitesseFour=="4800")
+    {
+        system("stty -F /dev/ttyUSB0 4800");
+        system("stty -F /dev/ttyUSB1 4800");
+    }
+
+    else if (Rs232::vitesseFour=="9600")
+    {
+        system("stty -F /dev/ttyUSB0 9600");
+        system("stty -F /dev/ttyUSB1 9600");
+    }
+    else if (Rs232::vitesseFour=="19200")
+    {
+        system("stty -F /dev/ttyUSB0 19200");
+        system("stty -F /dev/ttyUSB1 19200");
+    }
+
+
 
     id_tty=open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_NONBLOCK); //
     if (id_tty < 0 )
@@ -86,7 +108,8 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
 
     mutex.lock();
 
-    QString data = "$"+idFour+"VAR"+para+" \r";
+    QString data = "$"+Rs232::idFour+"RVAR"+para+" \r";
+    cout<<data.toStdString()<<endl;
     taille = data.size()+1; // recupere la taille de la donnée
 
     char * buffer = new char[ taille ]; // pour convertir le string en char*
@@ -99,7 +122,7 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
     usleep(50);
     for(int nb=0;nb<15;nb++)
     {
-        read(id_tty,buff+nb, 1);//lire sur la liaison caractère parcaractère
+        read(id_tty,buff+nb, 1);//lire sur la liaison caractère par caractère
         if(buff[nb]=='\r')//lire jusqu'au caractère \r
         {
             buff[nb]==0;
@@ -113,11 +136,13 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
     found2 = buffRead.indexOf(" ");
     trameFormate=buffRead.mid(found2,found);
 
+    cout<<trameFormate.toStdString()<<endl;
     mutex.unlock();// libérer le mutex
 
     if ((trameFormate.toFloat()>0) && (trameFormate.toFloat()<1000))
     {
         return trameFormate;
+
     }
     else
     {

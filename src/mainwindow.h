@@ -36,19 +36,23 @@ private slots:
 
     void afficheCam(QImage);
 
-    void on_actionConfiguration_avanc_e_triggered();
+    void prendrePhoto();
 
+    void delObjets();
+
+    void on_actionConfiguration_avanc_e_triggered();
 
 private:
     ThreadAcquerir *tAcqu;
     int idcam;
+    Sonde *sdRef, *sdExt, *sdInt;
     string lienPhotos, baudFour;
     QString adressFour;
     bool checkBoxCam;
     float coefExt1, coefExt2, coefExt3, coefRef1, coefRef2, coefRef3, stab;
     Camera *cam;
-    Rs232 *rs;
     Config *conf;
+    Etalonnage *et;
     Ui::MainWindow *ui;
 
 };
