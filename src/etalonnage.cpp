@@ -23,7 +23,7 @@ Etalonnage::Etalonnage(float stabFromCfg, Sonde ref, Sonde ext, Sonde inte, bool
     //    float refCoef=ref.coefficient1;
     sdRef = new Sonde("reference",ref.getCoef1(),ref.getCoef2(), ref.getCoef3());
     sdExt = new Sonde("externe",ext.getCoef1(),ext.getCoef2(), ext.getCoef3());
-    sdInt = new Sonde("interne",inte.getCoef1(),inte.getCoef2(), inte.getCoef3());
+//    sdInt = new Sonde("interne",inte.getCoef1(),inte.getCoef2(), inte.getCoef3());
     //    sdExt =  new Sonde("externe");
     //    sdRef = new Sonde("reference");
     sdInt = new Sonde("interne");
@@ -90,7 +90,7 @@ void Etalonnage::remplir_tabTemp()
 void Etalonnage::run()
 {
     ofstream fichier("/home/ludovic/Bureau/test.txt", ios::out | ios::trunc);
-
+//    emit emSigPrendPhoto();
     QMessageBox box;
     //    emit emSigPrendPhoto();
 
@@ -105,21 +105,23 @@ void Etalonnage::run()
         fr->definirTemp(str);//définie la temperature
 
         emit emSigCons(str.setNum(tabTemp.at(i)));
-//        float tmpTempo=sdRef->acquerirTemp().toFloat();
+        float tmpTempo=sdRef->acquerirTemp().toFloat();
 
 
-//        while((tmpTempo>(tabTemp.at(i)+0.5)) && (tmpTempo<(tabTemp.at(i)-0.5)) )
-//        {
-//            sleep(200);
-//            tmpTempo=sdRef->acquerirTemp().toFloat();
-//        }
+        while((tmpTempo>(tabTemp.at(i)+0.5)) && (tmpTempo<(tabTemp.at(i)-0.5)) )
+        {
+            sleep(200);
+            tmpTempo=sdRef->acquerirTemp().toFloat();
+        }
 
-//        float tempIntTempo=sdInt->acquerirTemp().toFloat();
-//        float tempRefTempo=sdRef->acquerirTemp().toFloat();
-//        float newcons=tabTemp.at(i)+tempIntTempo-tempRefTempo;// calculer la nouvelle consigne
-//        fr->definirTemp(str.setNum(newcons));//définie la temperature
-//        emit emSigCons(str.setNum(newcons));
-//        cout<<"temperatur envoyée :"<<str.toStdString()<<endl;
+        float tempIntTempo=sdInt->acquerirTemp().toFloat();
+        float tempRefTempo=sdRef->acquerirTemp().toFloat();
+        float newcons=tabTemp.at(i)+tempIntTempo-tempRefTempo;// calculer la nouvelle consigne
+        fr->definirTemp(str.setNum(newcons));//définie la temperature
+        cout<<"nouvelle consigne :"<<newcons<<endl;
+
+        emit emSigCons(str.setNum(newcons));
+        cout<<"temperatur envoyée :"<<str.toStdString()<<endl;
         stab = false;
         while(stab==false)
         {
@@ -132,29 +134,27 @@ void Etalonnage::run()
             stab = testStabilite(tabTempRecup, stabilite);
         }
 
-        cout<<"idcam :"<<idcam<<endl;
-        if((checkBox==true)&&(idcam==0) || ((checkBox==false)&&(idcam!=0)))
-        {
-
-            box.setText("Les photos ne seront pas enregistrées ");
-            box.exec();
-            return;
-        }
 
         if((checkBox==true)&&(idcam!=0))
         {
-
+            cout<<"CHEESE"<<endl;
             emit emSigPrendPhoto();
+            fichier<<"Reference : "<<endl;
+            fichier<<i+1<<" : ";
+            fichier<<sdRef->acquerirTemp().toFloat()<<endl;
         }
-        fichier<<"Reference : "<<endl;
-        fichier<<i+1<<" : ";
-        fichier<<sdRef->acquerirTemp().toFloat()<<endl;
+        else if(checkBox==false)
+        {
+            fichier<<"Reference : "<<endl;
+            fichier<<i+1<<" : ";
+            fichier<<sdRef->acquerirTemp().toFloat()<<endl;
 
-        fichier<<"Interne : "<<endl;
-        fichier<<i+1<<" : ";
-        fichier<<sdInt->acquerirTemp().toFloat()<<endl;
+            fichier<<"Interne : "<<endl;
+            fichier<<i+1<<" : ";
+            fichier<<sdInt->acquerirTemp().toFloat()<<endl;
 
-        fichier.close();
+            fichier.close();
+        }
     }
 }
 
@@ -183,8 +183,6 @@ bool Etalonnage::testStabilite(vector<float>tab, float stability)//
 
     cout<<"median : "<<median<<endl;
 
-
-
     for (int i=0; i<tab.size();i++)
     {
         if((tab.at(i)>max) && (tab.at(i)<median+5)&&(tab.at(i)>median-5))
@@ -195,7 +193,6 @@ bool Etalonnage::testStabilite(vector<float>tab, float stability)//
 
         cout<<"min :"<<min<<" max :"<<max<<endl;
     }
-
 
     if((max-min)<=stability )
     {

@@ -65,7 +65,7 @@ void Config::on_toolButton_clicked()
 
 void Config::on_pushValider_clicked()
 {
-
+    QMessageBox box;
 
     ofstream fichier(".examesure.cfg", ios::out | ios::trunc);
 
@@ -83,13 +83,10 @@ void Config::on_pushValider_clicked()
     fichier<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<endl;
     fichier.close();  // fermer le fichier
 
-    qApp->quit();
-//    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-
     qApp->exit(1);
 
-    emit emSigDel();
-//    qApp->exec();
+//    emit emSigDel();
+
 }
 
 void Config::on_pushAnnuler_clicked()

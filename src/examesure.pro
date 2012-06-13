@@ -19,5 +19,5 @@ SOURCES += camera.cpp \
  rs232.cpp \
  sonde.cpp \
     config.cpp
-CONFIG += link_pkgconfig
+CONFIG += link_pkgconfig \ pkg-config --cflags --libs x11
 PKGCONFIG = opencv

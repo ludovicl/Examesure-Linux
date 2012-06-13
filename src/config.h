@@ -36,7 +36,7 @@ private slots:
 
 signals :
 
-    void emSigDel();
+//    void emSigDel();
 
 private:
     Ui::Config *ui;

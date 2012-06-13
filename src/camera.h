@@ -31,7 +31,7 @@ private :
     static  int nbObCam;
 
 public :
-    void liberer();
+
     ~Camera();
     void enregistrer(string);
     Camera();

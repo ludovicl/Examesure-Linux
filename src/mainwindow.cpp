@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     conf = new Config();
+    QMessageBox box;
 
     connect (conf,SIGNAL(emSigDel()),this,SLOT(delObjets()));
     ifstream fichier(".examesure.cfg", ios::in);  // on ouvre le fichier en lecture
@@ -86,13 +87,26 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(tAcqu,SIGNAL(emSig(QString)),ui->labelTempInt,SLOT(setText(QString)));
 
 
-    if((idcam!=0) &&(cam->connecter(idcam-1)==0))
+    if((idcam!=0)&&(cam->connecter(idcam-1)==0))//si une camera est séléctioné et la camera bien connéecté
     {
         cam->start();
         connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
     }
-    else
-        delete cam;
+//    if ((idcam==0) &&(cam->connecter(idcam-1)!=0))//si aucune camere n'est séléctioné et la connexion renvoie 0
+//    {
+////        delete &cam;
+//        box.setText("l'objet est supprimé !");
+//        box.exec();
+//    }
+
+    if((checkBoxCam==true)&&(idcam==0) || ((checkBoxCam==false)&&(idcam!=0)))
+    {
+
+        box.setText("Les photos ne seront pas enregistrees ");
+        box.exec();
+        return;
+    }
+
 }
 
 
@@ -141,12 +155,6 @@ void MainWindow::on_demarrer_clicked()
         return;
     }
 
-
-
-    //    Sonde sdRef("reference", coefRef1, coefRef2, coefRef3);
-    //    Sonde sdExt("externe", coefExt1, coefExt2, coefExt3);
-    //    Sonde sdInt("interne");
-
     sdRef = new Sonde("reference", coefRef1, coefRef2, coefRef3);
     sdExt = new Sonde("externe", coefExt1, coefExt2, coefExt3);
     sdInt=new Sonde("interne");
@@ -176,7 +184,6 @@ void MainWindow::on_demarrer_clicked()
     et->start();
     connect(et,SIGNAL(emSigCons(QString)),ui->labelConsigne,SLOT(setText(QString)));
 
-
     connect(et,SIGNAL(emSigPrendPhoto()),this,SLOT(prendrePhoto()));
 
 }
@@ -186,7 +193,6 @@ void MainWindow::prendrePhoto()
     if((idcam!=0) &&(cam->connecter(idcam-1)==0)&& (checkBoxCam==true))
     {
         cam->enregistrer(lienPhotos);
-
         cout<<"enregistrer ok !"<<endl;
     }
 }
@@ -194,12 +200,12 @@ void MainWindow::prendrePhoto()
 void MainWindow::delObjets()
 {
 
-//    delete cam;
-//    delete conf;
-//    delete tAcqu;
-//    delete sdRef;
-//    delete sdExt;
-//    delete sdInt;
+//        delete cam;
+    //    delete conf;
+    //    delete tAcqu;
+    //    delete sdRef;
+    //    delete sdExt;
+    //    delete sdInt;
 }
 
 void MainWindow::on_actionConfiguration_avanc_e_triggered()

@@ -11,7 +11,6 @@
 
 Four::Four()
 {
-
     cout<<"Un objet Four"<<endl;
 }
 

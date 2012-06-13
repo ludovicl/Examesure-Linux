@@ -65,8 +65,6 @@ Rs232::Rs232()
         system("stty -F /dev/ttyUSB1 19200");
     }
 
-
-
     id_tty=open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_NONBLOCK); //
     if (id_tty < 0 )
     {
@@ -80,12 +78,13 @@ Rs232::Rs232()
 
     QString data = "$"+idFour+"WVAR8 3 \r";
 
-
     const char* buffer= data.toStdString().c_str();
 
-    mutex.lock();// bloque la liaison RS232
-    usleep(50);
+
+    mutex.lock();
+
     write(id_tty, buffer ,data.size()); //ecrire sur la liaison
+     usleep(200);
     mutex.unlock(); // debloque la liaison RS232
 
 }
@@ -95,9 +94,14 @@ void Rs232::ecrire(QString para, int id_tty)
     QString data = "$"+Rs232::idFour+"WVAR0 "+para+"\r";
     const char* buffer= data.toStdString().c_str();
 
+
+
     mutex.lock();
     write(id_tty, buffer ,data.size()); //envoi au port serie
+     usleep(200);
     mutex.unlock(); // debloque la liaison RS232
+
+
 
     usleep(50);
 
@@ -106,48 +110,61 @@ void Rs232::ecrire(QString para, int id_tty)
 QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature externe
 {
 
-    mutex.lock();
+    char buff[15];
 
+
+
+
+    mutex.lock();
+    buffRead="0";
     QString data = "$"+Rs232::idFour+"RVAR"+para+" \r";
     cout<<data.toStdString()<<endl;
     taille = data.size()+1; // recupere la taille de la donnée
 
     char * buffer = new char[ taille ]; // pour convertir le string en char*
 
-    strcpy(buffer, data.toStdString().c_str() ); // convertie le string en char*
+    strcpy(buffer, data.toStdString().c_str()); // convertie le string en char*
     write(id_tty, buffer ,data.size()); //envoi au port serie
 
-    delete buffer;
+    usleep(200);
 
-    usleep(50);
-    for(int nb=0;nb<15;nb++)
+    for(int nb=0;nb<20;nb++)
     {
         read(id_tty,buff+nb, 1);//lire sur la liaison caractère par caractère
-        if(buff[nb]=='\r')//lire jusqu'au caractère \r
+
+        if(buff[nb]=='\r')//lire jusqu'au caractère <cr>
         {
             buff[nb]==0;
             break;//sortir de la boucle
         }
     }
 
-    buffRead= buff;//convertie buff(char*) en QString
+
+    buffRead=buff;//convertie buff(char*) en QString
+
+
+
+    cout<<"buffer : "<<buffRead.toStdString()<<endl;
+    cout<<"Taille du buffer :"<<buffRead.size()<<endl;
 
     found = buffRead.lastIndexOf(" "); //trouve ou est le caractere  espace
-    found2 = buffRead.indexOf(" ");
+    found2 = buffRead.indexOf(" ");//et le 2em caractere espace
     trameFormate=buffRead.mid(found2,found);
 
     cout<<trameFormate.toStdString()<<endl;
-    mutex.unlock();// libérer le mutex
+
 
     if ((trameFormate.toFloat()>0) && (trameFormate.toFloat()<1000))
     {
+        mutex.unlock();
         return trameFormate;
-
     }
     else
     {
+        mutex.unlock();
         return 0;
     }
+
 
 }
 

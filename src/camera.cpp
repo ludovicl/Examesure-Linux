@@ -33,8 +33,11 @@ bool Camera::connecter(int id)
 
     camera = cvCaptureFromCAM(id);
 
-    if (!camera) {
-        cvReleaseCapture(&camera);
+    if (!camera)
+    {
+//        cvReleaseCapture(&camera);
+
+//        cvDestroyWindow( "mywindow" );
         box.setText("Verifier votre webcam");
         box.exec();
         cout<<"idcam :"<<idcam<<endl;
@@ -42,6 +45,7 @@ bool Camera::connecter(int id)
     }
     else
     {
+//        cvReleaseCapture(&camera);
         return 0;
     }
 }
@@ -58,27 +62,20 @@ void Camera::enregistrer(string lien )
     cvSaveImage(nomPhoto.c_str(),image);
 }
 
-void Camera::liberer()
-{
 
-    if (!camera)
-    {
-        cvReleaseCapture(&camera);
-    }
-
-
-}
 
 
 Camera::Camera()
 {
-nbObCam++;
+    nbObCam++;
 }
 
 Camera::~Camera()
 {
-nbObCam--;
-//cvReleaseCapture(&camera);
+    nbObCam--;
+    cvReleaseCapture(&camera);
+    cvDestroyAllWindows();
+    cvReleaseImage(&image);
 }
 
 

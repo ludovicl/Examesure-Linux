@@ -17,6 +17,8 @@
 using namespace std;
 #include <QMutex>
 #include<cstdlib> //pour avoir un pointeur null
+
+
 class Rs232
 {
 public :
@@ -46,7 +48,7 @@ private:
     int taille;
     char * buffer;
 
-    char buff[15];
+
     char key;
     int found;
     int found2;
