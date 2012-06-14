@@ -22,8 +22,9 @@ private :
     //coeff1=a, coeff2=b, coeff3=c dans une equation a+bx+cx²
     float coefficient1, coefficient2, coefficient3;
 public :
+    ~Sonde();
 
-
+    static int nbObjSonde;
     Sonde(string letypedesonde);
     Sonde(string type,float c1, float c2,float c3);
 

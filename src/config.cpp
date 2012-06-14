@@ -42,9 +42,6 @@ Config::Config(QWidget *parent) :
         fichier<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<endl;
         fichier.close();  // fermer le fichier
     }
-
-
-
 }
 
 Config::~Config()
@@ -85,7 +82,7 @@ void Config::on_pushValider_clicked()
 
     qApp->exit(1);
 
-//    emit emSigDel();
+    emit emSigDel();
 
 }
 

@@ -9,6 +9,7 @@
 //-------------------------------------------------------
 #include "camera.h"
 int Camera::nbObCam;
+CvCapture *Camera::capture;
 static QImage IplImage2QImage(const IplImage *iplImage)//fonction pour convertir IplImage* en QImage
 {
     int height = iplImage->height;
@@ -24,20 +25,15 @@ static QImage IplImage2QImage(const IplImage *iplImage)//fonction pour convertir
     }
 }
 
-
-
 bool Camera::connecter(int id)
 {
 
     QMessageBox box;
+    Camera::capture = cvCaptureFromCAM(id);
 
-    camera = cvCaptureFromCAM(id);
-
-    if (!camera)
+    cout<<"CAMERA : "<<Camera::capture<<endl;
+    if (!Camera::capture)
     {
-//        cvReleaseCapture(&camera);
-
-//        cvDestroyWindow( "mywindow" );
         box.setText("Verifier votre webcam");
         box.exec();
         cout<<"idcam :"<<idcam<<endl;
@@ -45,7 +41,6 @@ bool Camera::connecter(int id)
     }
     else
     {
-//        cvReleaseCapture(&camera);
         return 0;
     }
 }
@@ -62,22 +57,20 @@ void Camera::enregistrer(string lien )
     cvSaveImage(nomPhoto.c_str(),image);
 }
 
-
-
-
 Camera::Camera()
 {
-    nbObCam++;
+    Camera::nbObCam++;
+    cout<<"nombre d'objet camera :"<< Camera::nbObCam<<endl;
+}
+void Camera::liberer()
+{
+    cvReleaseCapture(&capture);
 }
 
 Camera::~Camera()
 {
-    nbObCam--;
-    cvReleaseCapture(&camera);
-    cvDestroyAllWindows();
-    cvReleaseImage(&image);
+//    cvReleaseCapture(&capture);
 }
-
 
 void Camera::run()
 {
@@ -85,7 +78,7 @@ void Camera::run()
     while(true)
     {
         usleep(50);
-        image = cvQueryFrame(camera);//récuperer le flux de la webcam
+        image = cvQueryFrame(capture);//récuperer le flux de la webcam
         img=IplImage2QImage(image);//convertir IplImage en QImage
         emit emSig2(img);
     }

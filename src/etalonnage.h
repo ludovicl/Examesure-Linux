@@ -13,6 +13,7 @@
 #include <iostream>
 using namespace std;
 //#include "mainwindow.h"
+#include "math.h"
 #include "sonde.h"
 #include <vector>
 #include "four.h"

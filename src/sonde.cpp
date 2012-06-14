@@ -8,11 +8,12 @@
 //AUTEUR : LARDIES Ludovic
 //-------------------------------------------------------
 #include "sonde.h"
+int Sonde::nbObjSonde;
 
 Sonde::Sonde(string ty)
 {
     type = ty;
-    cout<<"Un objet sonde"<<endl;
+    Sonde::nbObjSonde++;
 }
 
 Sonde::Sonde(string ty,float c1,float c2,float c3)
@@ -22,7 +23,7 @@ Sonde::Sonde(string ty,float c1,float c2,float c3)
     coefficient3=c3;
 
     type = ty;
-    cout<<"Un objet sonde"<<endl;
+    Sonde::nbObjSonde++;
 }
 
 QString Sonde::acquerirTemp() //lire la temperature du type
@@ -86,6 +87,12 @@ ThreadAcquerir::ThreadAcquerir(string cons)
     sd = new Sonde(cons);
 
 }
+
+Sonde::~Sonde()
+{
+    Sonde::nbObjSonde--;
+}
+
 
 void ThreadAcquerir::run()
 {

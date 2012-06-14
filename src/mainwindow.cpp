@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     conf = new Config();
     QMessageBox box;
 
+    cam= new Camera();
     connect (conf,SIGNAL(emSigDel()),this,SLOT(delObjets()));
     ifstream fichier(".examesure.cfg", ios::in);  // on ouvre le fichier en lecture
 
@@ -71,11 +72,9 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else
     {
-        cerr << "Probléme pendant la lecture du fichier de configuration" << endl;
+        cerr << "Probléme pendant la lecture du fichier de la configuration" << endl;
     }
 
-
-    cam= new Camera();
 
     Rs232 *rs=Rs232::getInstance (adressFour, baudFour);
 
@@ -92,16 +91,10 @@ MainWindow::MainWindow(QWidget *parent) :
         cam->start();
         connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
     }
-//    if ((idcam==0) &&(cam->connecter(idcam-1)!=0))//si aucune camere n'est séléctioné et la connexion renvoie 0
-//    {
-////        delete &cam;
-//        box.setText("l'objet est supprimé !");
-//        box.exec();
-//    }
+
 
     if((checkBoxCam==true)&&(idcam==0) || ((checkBoxCam==false)&&(idcam!=0)))
     {
-
         box.setText("Les photos ne seront pas enregistrees ");
         box.exec();
         return;
@@ -115,10 +108,14 @@ void MainWindow::afficheCam(QImage image)
     ui->labelCam->setPixmap(QPixmap::fromImage(image));
 }
 
-
-
 MainWindow::~MainWindow()
 {
+    if (cam->isRunning())
+    {
+        cam->terminate();//terminer le thread de la webcam;
+        cam->liberer();//libere les ressources de la webcam
+        delete cam;
+    }
     delete ui;
 }
 
@@ -132,7 +129,6 @@ void MainWindow::on_demarrer_clicked()
         box.exec();
         return;
     }
-
 
     if((ui->spinInter->text().toFloat())>(ui->spinMaxi->text().toFloat()))
     {
@@ -154,6 +150,17 @@ void MainWindow::on_demarrer_clicked()
         box.exec();
         return;
     }
+
+    if (Sonde::nbObjSonde>3)
+    {
+        delete sdRef;
+        delete sdInt;
+        delete sdExt;
+        cout<<"c'est delete !"<<endl;
+    }
+
+
+    cout<<"Nombre d'objet sonde :"<<Sonde::nbObjSonde<<endl;
 
     sdRef = new Sonde("reference", coefRef1, coefRef2, coefRef3);
     sdExt = new Sonde("externe", coefExt1, coefExt2, coefExt3);
@@ -199,8 +206,7 @@ void MainWindow::prendrePhoto()
 
 void MainWindow::delObjets()
 {
-
-//        delete cam;
+    //    delete cam;
     //    delete conf;
     //    delete tAcqu;
     //    delete sdRef;

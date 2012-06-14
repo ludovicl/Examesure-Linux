@@ -23,19 +23,22 @@ class Camera : public QThread
     Q_OBJECT
 
 private :
-    CvCapture *camera;
+
     IplImage *image;
     QImage img;
     QPixmap pm;
     int idcam;
     static  int nbObCam;
+    static  CvCapture *capture;
 
 public :
 
     ~Camera();
     void enregistrer(string);
     Camera();
+    void liberer();
     virtual void run();
+    //    virtual void terminate();
     bool connecter(int id);
 
 

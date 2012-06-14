@@ -65,7 +65,7 @@ Rs232::Rs232()
         system("stty -F /dev/ttyUSB1 19200");
     }
 
-    id_tty=open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_NONBLOCK); //
+    id_tty=open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_NONBLOCK ); //
     if (id_tty < 0 )
     {
         perror("open");
@@ -76,15 +76,16 @@ Rs232::Rs232()
         cout<<"On est co "<<endl;
     }
 
+
+
     QString data = "$"+idFour+"WVAR8 3 \r";
 
     const char* buffer= data.toStdString().c_str();
 
-
     mutex.lock();
 
     write(id_tty, buffer ,data.size()); //ecrire sur la liaison
-     usleep(200);
+    usleep(200);
     mutex.unlock(); // debloque la liaison RS232
 
 }
@@ -98,7 +99,7 @@ void Rs232::ecrire(QString para, int id_tty)
 
     mutex.lock();
     write(id_tty, buffer ,data.size()); //envoi au port serie
-     usleep(200);
+    usleep(200);
     mutex.unlock(); // debloque la liaison RS232
 
 
@@ -112,10 +113,8 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
 
     char buff[15];
 
-
-
-
     mutex.lock();
+
     buffRead="0";
     QString data = "$"+Rs232::idFour+"RVAR"+para+" \r";
     cout<<data.toStdString()<<endl;
@@ -127,22 +126,24 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
     write(id_tty, buffer ,data.size()); //envoi au port serie
 
     usleep(200);
-
-    for(int nb=0;nb<20;nb++)
+    int nb=0;
+    for(int i=0; i<3; i++)
     {
-        read(id_tty,buff+nb, 1);//lire sur la liaison caractère par caractère
-
-        if(buff[nb]=='\r')//lire jusqu'au caractère <cr>
+        for(nb=0;nb<20;nb++)
         {
-            buff[nb]==0;
-            break;//sortir de la boucle
+            read(id_tty,buff+nb, 1);//lire sur la liaison caractère par caractère
+
+            if(buff[nb]=='\r')//lire jusqu'au caractère <cr>
+            {
+                buff[nb]==0;
+                break;//sortir de la boucle
+            }
         }
+        if(nb>4)
+            break;
     }
 
-
     buffRead=buff;//convertie buff(char*) en QString
-
-
 
     cout<<"buffer : "<<buffRead.toStdString()<<endl;
     cout<<"Taille du buffer :"<<buffRead.size()<<endl;

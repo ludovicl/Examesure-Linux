@@ -15,17 +15,10 @@ Etalonnage::Etalonnage(float stabFromCfg, Sonde ref, Sonde ext, Sonde inte, bool
     stabilite=stabFromCfg;
     cout<<"Un objet etalonnage"<<endl;
     fr = new Four;
-    //    cam= new Camera(_cam);
-    idcam = _idCam;
-    //    sdRef= new Sonde(ref);
 
-    //      sdRef =ref;
-    //    float refCoef=ref.coefficient1;
+    idcam = _idCam;
     sdRef = new Sonde("reference",ref.getCoef1(),ref.getCoef2(), ref.getCoef3());
     sdExt = new Sonde("externe",ext.getCoef1(),ext.getCoef2(), ext.getCoef3());
-//    sdInt = new Sonde("interne",inte.getCoef1(),inte.getCoef2(), inte.getCoef3());
-    //    sdExt =  new Sonde("externe");
-    //    sdRef = new Sonde("reference");
     sdInt = new Sonde("interne");
 }
 
@@ -74,7 +67,6 @@ vector<float> Etalonnage::get_tabTemp()
 void Etalonnage::set_tabTemp(vector<float> para)
 {
     tabTemp=para;
-
 }
 
 void Etalonnage::remplir_tabTemp()
@@ -82,17 +74,23 @@ void Etalonnage::remplir_tabTemp()
     float tmp=tempMini;
     while (tmp<=tempMax+intervalle)
     {
-        tabTemp.push_back(tmp);//remplir le vector des temperatures
+
+        tmp= tmp * 100;
+        tmp = ceil( tmp );
+        tmp = tmp / 100;
+
+
+        tabTemp.push_back(tmp);//remplir le vector des temperature
         tmp +=intervalle;
     }
+
+
 }
 
 void Etalonnage::run()
 {
     ofstream fichier("/home/ludovic/Bureau/test.txt", ios::out | ios::trunc);
-//    emit emSigPrendPhoto();
     QMessageBox box;
-    //    emit emSigPrendPhoto();
 
     bool stab;
     cout<<"dans les consignes"<<endl;
@@ -107,10 +105,11 @@ void Etalonnage::run()
         emit emSigCons(str.setNum(tabTemp.at(i)));
         float tmpTempo=sdRef->acquerirTemp().toFloat();
 
-
-        while((tmpTempo>(tabTemp.at(i)+0.5)) && (tmpTempo<(tabTemp.at(i)-0.5)) )
+        //tant que temperature est suprérieur a la consigne +0,5° ou inférieur à la consigne -0.5°
+        while((tmpTempo>(tabTemp.at(i)+0.5)) || (tmpTempo<(tabTemp.at(i)-0.5)) )
         {
             sleep(200);
+            cout<<"dans while"<<endl;
             tmpTempo=sdRef->acquerirTemp().toFloat();
         }
 
@@ -133,7 +132,6 @@ void Etalonnage::run()
             }
             stab = testStabilite(tabTempRecup, stabilite);
         }
-
 
         if((checkBox==true)&&(idcam!=0))
         {
@@ -172,11 +170,11 @@ bool Etalonnage::testStabilite(vector<float>tab, float stability)//
 
     sort(tab.begin(), tab.end());
 
-    if (taille  % 2 == 0)
+    if (taille  % 2 == 0)//le nombre de valeurs dans le vector est impaire
     {
         median = (tab[taille / 2 - 1] + tab[taille / 2]) / 2;
     }
-    else
+    else// le nombre de valeurs dans le vector est paire
     {
         median = tab[taille / 2];
     }
