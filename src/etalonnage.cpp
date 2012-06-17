@@ -8,19 +8,31 @@
 //AUTEUR : LARDIES Ludovic
 //-------------------------------------------------------
 #include "etalonnage.h"
-
+int Etalonnage::nbObjEtalonnage;
 
 Etalonnage::Etalonnage(float stabFromCfg, Sonde ref, Sonde ext, Sonde inte, bool check, string adresse, int _idCam)
 {
+    Etalonnage::nbObjEtalonnage++;
+
     stabilite=stabFromCfg;
     cout<<"Un objet etalonnage"<<endl;
-    fr = new Four;
 
+    fr = new Four;
     idcam = _idCam;
     sdRef = new Sonde("reference",ref.getCoef1(),ref.getCoef2(), ref.getCoef3());
     sdExt = new Sonde("externe",ext.getCoef1(),ext.getCoef2(), ext.getCoef3());
     sdInt = new Sonde("interne");
 }
+
+Etalonnage::~Etalonnage()
+{
+    delete fr;
+    delete sdRef;
+    delete sdExt;
+    delete sdInt;
+    Etalonnage::nbObjEtalonnage--;
+}
+
 
 float Etalonnage::get_tempMini()
 {
@@ -72,13 +84,12 @@ void Etalonnage::set_tabTemp(vector<float> para)
 void Etalonnage::remplir_tabTemp()
 {
     float tmp=tempMini;
-    while (tmp<=tempMax+intervalle)
+    while (tmp<tempMax+intervalle)
     {
 
         tmp= tmp * 100;
         tmp = ceil( tmp );
         tmp = tmp / 100;
-
 
         tabTemp.push_back(tmp);//remplir le vector des temperature
         tmp +=intervalle;
@@ -106,11 +117,18 @@ void Etalonnage::run()
         float tmpTempo=sdRef->acquerirTemp().toFloat();
 
         //tant que temperature est suprérieur a la consigne +0,5° ou inférieur à la consigne -0.5°
-        while((tmpTempo>(tabTemp.at(i)+0.5)) || (tmpTempo<(tabTemp.at(i)-0.5)) )
+        while(true)
         {
-            sleep(200);
-            cout<<"dans while"<<endl;
-            tmpTempo=sdRef->acquerirTemp().toFloat();
+            if ((tmpTempo<(tabTemp.at(i)+0.5)) && (tmpTempo>(tabTemp.at(i)-0.5)) )
+            {
+                break;
+            }
+            else
+            {
+                sleep(1);
+                tmpTempo=sdRef->acquerirTemp().toFloat();
+                cout<<"dans le while"<<endl;
+            }
         }
 
         float tempIntTempo=sdInt->acquerirTemp().toFloat();

@@ -14,8 +14,8 @@ Sonde::Sonde(string ty)
 {
     type = ty;
     Sonde::nbObjSonde++;
+    cout<<"Nombre d'objet sonde :"<<Sonde::nbObjSonde<<endl;
 }
-
 Sonde::Sonde(string ty,float c1,float c2,float c3)
 {
     coefficient1=c1;

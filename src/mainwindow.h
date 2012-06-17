@@ -13,7 +13,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <QMessageBox>
-#include "sonde.h"
+//#include "sonde.h"
 #include "etalonnage.h"
 #include "camera.h"
 #include "config.h"
@@ -38,15 +38,13 @@ private slots:
 
     void prendrePhoto();
 
-    void delObjets();
-
     void on_actionConfiguration_avanc_e_triggered();
 
 private:
     ThreadAcquerir *tAcqu;
-    int idcam;
+    int idcam,indexVitesse;
     Sonde *sdRef, *sdExt, *sdInt;
-    string lienPhotos, baudFour;
+    string lienPhotos, baudFour;//baud = vitesse du four
     QString adressFour;
     bool checkBoxCam;
     float coefExt1, coefExt2, coefExt3, coefRef1, coefRef2, coefRef3, stab;

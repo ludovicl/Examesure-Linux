@@ -8,10 +8,16 @@
 //AUTEUR : LARDIES Ludovic
 //-------------------------------------------------------
 #include "four.h"
-
+int Four::nbObFour;
 Four::Four()
 {
-    cout<<"Un objet Four"<<endl;
+    Four::nbObFour++;
+    cout<<"Nombre d'objet four :"<<nbObFour<<endl;
+}
+
+Four::~Four()
+{
+   Four::nbObFour--;
 }
 
 void Four::definirTemp(QString temp)
@@ -20,7 +26,5 @@ void Four::definirTemp(QString temp)
     rs->ecrire(temp, rs->get_id_tty());
     cout<<"ici four"<<endl;
 }
-
-
 
 

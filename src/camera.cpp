@@ -34,7 +34,7 @@ bool Camera::connecter(int id)
     cout<<"CAMERA : "<<Camera::capture<<endl;
     if (!Camera::capture)
     {
-        box.setText("Verifier votre webcam");
+        box.setText("Verifiez votre webcam");
         box.exec();
         cout<<"idcam :"<<idcam<<endl;
         return 1;
@@ -62,19 +62,15 @@ Camera::Camera()
     Camera::nbObCam++;
     cout<<"nombre d'objet camera :"<< Camera::nbObCam<<endl;
 }
-void Camera::liberer()
-{
-    cvReleaseCapture(&capture);
-}
 
 Camera::~Camera()
 {
+    Camera::nbObCam--;
 //    cvReleaseCapture(&capture);
 }
 
 void Camera::run()
 {
-
     while(true)
     {
         usleep(50);

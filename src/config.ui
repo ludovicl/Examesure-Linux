@@ -140,7 +140,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Séléctionnez cettte option si vous utilisez&lt;/p&gt;&lt;p&gt;une sonde avec afficheur digital&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
-     <string>Eregister les mesures avec la webcam</string>
+     <string>Eregistrer les mesures avec la webcam</string>
     </property>
    </widget>
   </widget>
@@ -725,6 +725,22 @@
   <zorder>pushValider</zorder>
   <zorder>pushAnnuler</zorder>
  </widget>
+ <tabstops>
+  <tabstop>spinCoefRef1</tabstop>
+  <tabstop>spinCoefRef2</tabstop>
+  <tabstop>spinCoefRef3</tabstop>
+  <tabstop>spinCoefExt1</tabstop>
+  <tabstop>spinCoefExt2</tabstop>
+  <tabstop>spinCoefExt3</tabstop>
+  <tabstop>pushValider</tabstop>
+  <tabstop>pushAnnuler</tabstop>
+  <tabstop>checkBox</tabstop>
+  <tabstop>spinStab</tabstop>
+  <tabstop>comboWebcam</tabstop>
+  <tabstop>spinAddr</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>comboVitesses</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

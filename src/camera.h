@@ -15,7 +15,8 @@
 #include <opencv/cv.h>
 #include <QImage>
 #include <QPixmap>
-#include "config.h"
+#include <iostream>
+using namespace std;
 #include <time.h>
 using namespace cv;
 class Camera : public QThread
@@ -28,15 +29,16 @@ private :
     QImage img;
     QPixmap pm;
     int idcam;
-    static  int nbObCam;
+
     static  CvCapture *capture;
 
 public :
 
+    static  int nbObCam;
     ~Camera();
     void enregistrer(string);
     Camera();
-    void liberer();
+
     virtual void run();
     //    virtual void terminate();
     bool connecter(int id);

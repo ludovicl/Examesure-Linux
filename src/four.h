@@ -20,8 +20,8 @@ private :
    static int vitesse;
 
 public :
-
-
+    static int nbObFour;
+    ~Four();
     Four();
     void definirTemp(QString);
 

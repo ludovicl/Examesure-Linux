@@ -23,17 +23,22 @@ MainWindow::MainWindow(QWidget *parent) :
     QMessageBox box;
 
     cam= new Camera();
-    connect (conf,SIGNAL(emSigDel()),this,SLOT(delObjets()));
-    ifstream fichier(".examesure.cfg", ios::in);  // on ouvre le fichier en lecture
 
+   ifstream fichier(".examesure.cfg", ios::in);  // on ouvre le fichier en lecture
+
+
+    /*------------------------Lecteur dans le fichier de configuration -------------------------------- */
     if(fichier)  // si l'ouverture a réussi
     {
-        string contenuFichier;  // déclaration d'une chaîne qui contiendra la ligne lue
+
+        string contenuFichier;  // string qui contiendra la ligne lue
 
         fichier>>contenuFichier>>contenuFichier;
         adressFour=QString::fromStdString ( contenuFichier);
         fichier>>contenuFichier>>contenuFichier;
         baudFour=contenuFichier;
+        fichier>>contenuFichier>>contenuFichier;
+        indexVitesse=atoi(contenuFichier.c_str());
         fichier>>contenuFichier>>contenuFichier;
         idcam = atoi(contenuFichier.c_str());//convertir string en int
         fichier>>contenuFichier>>contenuFichier;
@@ -56,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
         coefExt3=atof(contenuFichier.c_str());
 
         cout<<"idcam :"<<idcam<<endl;
+        cout<<"index Vitesse :"<<indexVitesse<<endl;
         cout<<"lien photos : "<<lienPhotos<<endl;
         cout<<"checkbox : "<<checkBoxCam<<endl;
         cout<<"adresse du four : "<<adressFour.toStdString()<<endl;
@@ -74,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         cerr << "Probléme pendant la lecture du fichier de la configuration" << endl;
     }
+    /*----------------------------------------------------------------------------------------------- */
 
 
     Rs232 *rs=Rs232::getInstance (adressFour, baudFour);
@@ -92,7 +99,6 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
     }
 
-
     if((checkBoxCam==true)&&(idcam==0) || ((checkBoxCam==false)&&(idcam!=0)))
     {
         box.setText("Les photos ne seront pas enregistrees ");
@@ -101,7 +107,6 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
 }
-
 
 void MainWindow::afficheCam(QImage image)
 {
@@ -113,7 +118,7 @@ MainWindow::~MainWindow()
     if (cam->isRunning())
     {
         cam->terminate();//terminer le thread de la webcam;
-        cam->liberer();//libere les ressources de la webcam
+        cout<<"cam delete !"<<endl;
         delete cam;
     }
     delete ui;
@@ -151,7 +156,7 @@ void MainWindow::on_demarrer_clicked()
         return;
     }
 
-    if (Sonde::nbObjSonde>3)
+    if (Sonde::nbObjSonde>3)// pour ne pas
     {
         delete sdRef;
         delete sdInt;
@@ -159,12 +164,15 @@ void MainWindow::on_demarrer_clicked()
         cout<<"c'est delete !"<<endl;
     }
 
-
-    cout<<"Nombre d'objet sonde :"<<Sonde::nbObjSonde<<endl;
+    if(Etalonnage::nbObjEtalonnage>1)
+    {
+          delete et;
+    }
 
     sdRef = new Sonde("reference", coefRef1, coefRef2, coefRef3);
     sdExt = new Sonde("externe", coefExt1, coefExt2, coefExt3);
     sdInt=new Sonde("interne");
+    cout<<"Nombre d'objet sonde :"<<Sonde::nbObjSonde<<endl;
 
     et = new Etalonnage(stab, *sdRef, *sdExt, *sdInt, checkBoxCam, lienPhotos, idcam);
 
@@ -192,7 +200,6 @@ void MainWindow::on_demarrer_clicked()
     connect(et,SIGNAL(emSigCons(QString)),ui->labelConsigne,SLOT(setText(QString)));
 
     connect(et,SIGNAL(emSigPrendPhoto()),this,SLOT(prendrePhoto()));
-
 }
 
 void MainWindow::prendrePhoto()
@@ -202,16 +209,6 @@ void MainWindow::prendrePhoto()
         cam->enregistrer(lienPhotos);
         cout<<"enregistrer ok !"<<endl;
     }
-}
-
-void MainWindow::delObjets()
-{
-    //    delete cam;
-    //    delete conf;
-    //    delete tAcqu;
-    //    delete sdRef;
-    //    delete sdExt;
-    //    delete sdInt;
 }
 
 void MainWindow::on_actionConfiguration_avanc_e_triggered()

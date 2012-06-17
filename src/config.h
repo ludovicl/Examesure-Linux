@@ -15,6 +15,7 @@ using namespace std;
 #include <QMessageBox>
 #include <QWidget>
 #include <fstream>
+#include <QAbstractButton>
 
 using namespace std;
 namespace Ui {
@@ -34,11 +35,14 @@ private slots:
     void on_pushValider_clicked();
     void on_pushAnnuler_clicked();
 
-signals :
-
-    void emSigDel();
-
 private:
+
+    int idcam, indexVitesse;
+    string lienPhotos, baudFour;//baud = vitesse du four
+    QString adressFour;
+    bool checkBoxCam;
+    float coefExt1, coefExt2, coefExt3, coefRef1, coefRef2, coefRef3, stab;
+
     Ui::Config *ui;
 };
 

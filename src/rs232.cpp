@@ -9,7 +9,7 @@
 //-------------------------------------------------------
 #include "rs232.h"
 
-
+int Rs232::id_tty;
 Rs232* Rs232::rs232 = NULL;
 string Rs232::vitesseFour="0";
 QString Rs232::idFour="0";
@@ -40,7 +40,7 @@ Rs232::Rs232()
 {
 
 
-    cout<<"Un objet entree"<<endl;
+    //    cout<<"Un objet entree"<<endl;
 
     if (Rs232::vitesseFour=="2400")
     {
@@ -66,16 +66,24 @@ Rs232::Rs232()
     }
 
     id_tty=open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_NONBLOCK ); //
+
+
+
+
     if (id_tty < 0 )
     {
+        QMessageBox box;
         perror("open");
         cout<<"On est pas co "<<endl;
+        box.setText("VERIFIEZ VOTRE LIASISON RS232");
+        box.exec();
     }
     else
     {
-        cout<<"On est co "<<endl;
-    }
 
+        cout<<"On est co "<<endl;
+
+    }
 
 
     QString data = "$"+idFour+"WVAR8 3 \r";
@@ -96,8 +104,10 @@ void Rs232::ecrire(QString para, int id_tty)
     const char* buffer= data.toStdString().c_str();
 
 
-
     mutex.lock();
+
+    tcflush(Rs232::id_tty,TCIFLUSH );
+
     write(id_tty, buffer ,data.size()); //envoi au port serie
     usleep(200);
     mutex.unlock(); // debloque la liaison RS232
@@ -121,27 +131,35 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
     taille = data.size()+1; // recupere la taille de la donnée
 
     char * buffer = new char[ taille ]; // pour convertir le string en char*
-
     strcpy(buffer, data.toStdString().c_str()); // convertie le string en char*
+
+
     write(id_tty, buffer ,data.size()); //envoi au port serie
 
     usleep(200);
     int nb=0;
-    for(int i=0; i<3; i++)
-    {
-        for(nb=0;nb<20;nb++)
-        {
-            read(id_tty,buff+nb, 1);//lire sur la liaison caractère par caractère
+    //    for(int i=0; i<3; i++)
+    //    {
 
-            if(buff[nb]=='\r')//lire jusqu'au caractère <cr>
-            {
-                buff[nb]==0;
-                break;//sortir de la boucle
-            }
+    for(nb=0;nb<20;nb++)
+    {
+        read(id_tty,buff+nb, 1);//lire sur la liaison caractère par caractère
+
+        if(buff[nb]=='\r')//lire jusqu'au caractère <cr>
+        {
+            
+            break;//sortir de la boucle
         }
-        if(nb>4)
-            break;
     }
+    mutex.unlock();
+    
+    
+    
+    //        if(nb>4)
+    //            break;
+    //    }
+
+    tcflush(Rs232::id_tty,TCOFLUSH );
 
     buffRead=buff;//convertie buff(char*) en QString
 
@@ -153,7 +171,6 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
     trameFormate=buffRead.mid(found2,found);
 
     cout<<trameFormate.toStdString()<<endl;
-
 
     if ((trameFormate.toFloat()>0) && (trameFormate.toFloat()<1000))
     {

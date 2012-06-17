@@ -14,13 +14,11 @@
 using namespace std;
 //#include "mainwindow.h"
 #include "math.h"
+#include "four.h"
 #include "sonde.h"
 #include <vector>
-#include "four.h"
 #include <QMessageBox>
-#include "camera.h"
 #include <QtGui>
-#include <QSemaphore>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -29,8 +27,9 @@ class Etalonnage : public QThread
 {
     Q_OBJECT
 private :
-    float tempMini;
-    float tempMax;
+
+    int tempMini;
+    int tempMax;
     float intervalle;
     vector<float>tabTemp;
     vector<float>tabTempRecup;
@@ -49,7 +48,11 @@ signals:
     virtual void emSigPrendPhoto();
 
 public :
+
     Etalonnage(float, Sonde, Sonde, Sonde, bool, string, int );
+    ~Etalonnage();
+
+    static int nbObjEtalonnage;//vérifier le nombre d'objet
 
     bool testStabilite(vector<float>, float);
 
