@@ -30,7 +30,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-
 private slots:
     void on_demarrer_clicked();
 
@@ -46,7 +45,7 @@ private:
     Sonde *sdRef, *sdExt, *sdInt;
     string lienPhotos, baudFour;//baud = vitesse du four
     QString adressFour;
-    bool checkBoxCam;
+    string checkBoxCam;
     float coefExt1, coefExt2, coefExt3, coefRef1, coefRef2, coefRef3, stab;
     Camera *cam;
     Config *conf;

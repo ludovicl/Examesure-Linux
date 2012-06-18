@@ -10,7 +10,7 @@
 #include "etalonnage.h"
 int Etalonnage::nbObjEtalonnage;
 
-Etalonnage::Etalonnage(float stabFromCfg, Sonde ref, Sonde ext, Sonde inte, bool check, string adresse, int _idCam)
+Etalonnage::Etalonnage(float stabFromCfg, Sonde ref, Sonde ext, Sonde inte, string check, string adresse, int _idCam)
 {
     Etalonnage::nbObjEtalonnage++;
 
@@ -102,7 +102,6 @@ void Etalonnage::run()
 {
     ofstream fichier("/home/ludovic/Bureau/test.txt", ios::out | ios::trunc);
     QMessageBox box;
-
     bool stab;
     cout<<"dans les consignes"<<endl;
     for (int i=0; i<tabTemp.size();i++)//les consignes rentrées par l'opérateur
@@ -114,19 +113,23 @@ void Etalonnage::run()
         fr->definirTemp(str);//définie la temperature
 
         emit emSigCons(str.setNum(tabTemp.at(i)));
-        float tmpTempo=sdRef->acquerirTemp().toFloat();
+        float tmpTempo=sdInt->acquerirTemp().toFloat();
 
         //tant que temperature est suprérieur a la consigne +0,5° ou inférieur à la consigne -0.5°
         while(true)
         {
             if ((tmpTempo<(tabTemp.at(i)+0.5)) && (tmpTempo>(tabTemp.at(i)-0.5)) )
             {
+//                QMessageBox box;
+//                box.setText("CONSIGNE ATTEINTE ");
+//                box.exec();
                 break;
+
             }
             else
             {
                 sleep(1);
-                tmpTempo=sdRef->acquerirTemp().toFloat();
+                tmpTempo=sdInt->acquerirTemp().toFloat();
                 cout<<"dans le while"<<endl;
             }
         }
@@ -151,7 +154,7 @@ void Etalonnage::run()
             stab = testStabilite(tabTempRecup, stabilite);
         }
 
-        if((checkBox==true)&&(idcam!=0))
+        if((checkBox=="1")&&(idcam!=0))
         {
             cout<<"CHEESE"<<endl;
             emit emSigPrendPhoto();
@@ -159,8 +162,9 @@ void Etalonnage::run()
             fichier<<i+1<<" : ";
             fichier<<sdRef->acquerirTemp().toFloat()<<endl;
         }
-        else if(checkBox==false)
+        else
         {
+            cout<<"ON STOCK DANS LE FICHIER "<<endl;
             fichier<<"Reference : "<<endl;
             fichier<<i+1<<" : ";
             fichier<<sdRef->acquerirTemp().toFloat()<<endl;

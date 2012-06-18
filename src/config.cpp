@@ -36,7 +36,7 @@ Config::Config(QWidget *parent) :
         fichier>>contenuFichier>>contenuFichier;
         lienPhotos=contenuFichier;
         fichier>>contenuFichier>>contenuFichier;
-        checkBoxCam=contenuFichier.c_str();
+        checkBoxCam=contenuFichier;
         fichier>>contenuFichier>>contenuFichier;
         stab=atof(contenuFichier.c_str());
         fichier>>contenuFichier>>contenuFichier;
@@ -53,6 +53,15 @@ Config::Config(QWidget *parent) :
         coefExt3=atof(contenuFichier.c_str());
         fichier.close();
 
+        cout<<"Check box de config : "<<checkBoxCam<<endl;
+
+        if(checkBoxCam=="1")
+        {
+            cout<<"checkbox est check !"<<endl;
+            ui->checkBox->setChecked(true);
+        }
+        if(checkBoxCam=="0")
+            ui->checkBox->setChecked(false);
 
         /*-----------On definie la fenêtre config en fonction du fichier de configuration----*/
         ui->comboWebcam->setCurrentIndex(idcam);
@@ -70,15 +79,8 @@ Config::Config(QWidget *parent) :
 
         cout<<"contenue checkbox : "<<checkBoxCam<<endl;
 
-        /*-----Le checkbox ne fonctionne pas------- */
-        //        if(checkBoxCam==true)
-        //        {
-        //            cout<<"checkbox est check !"<<endl;
-        //            ui->checkBox->setChecked(true);
-        //        }
-        //        else
-        //            ui->checkBox->setChecked(false);
-        /*-----FIN Le checkbox ne fonctionne pas------- */
+
+
     }
     else
     {
@@ -120,6 +122,9 @@ void Config::on_toolButton_clicked()
     dialog->setFileMode(QFileDialog::DirectoryOnly);
     connect(dialog,SIGNAL(fileSelected( QString  )),ui->labelLien,SLOT(setText(QString)));
     dialog->exec();
+
+
+
 }
 
 void Config::on_pushValider_clicked()

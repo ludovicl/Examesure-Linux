@@ -72,18 +72,21 @@ Rs232::Rs232()
 
     if (id_tty < 0 )
     {
+
+        id_tty=open("/dev/ttyUSB1", O_RDWR | O_NOCTTY | O_NONBLOCK ); //
+    }
+
+
+    if (id_tty < 0 )
+    {
         QMessageBox box;
         perror("open");
-        cout<<"On est pas co "<<endl;
+//        cout<<"On est pas co "<<endl;
         box.setText("VERIFIEZ VOTRE LIASISON RS232");
         box.exec();
     }
-    else
-    {
 
-        cout<<"On est co "<<endl;
 
-    }
 
 
     QString data = "$"+idFour+"WVAR8 3 \r";
@@ -127,7 +130,7 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
 
     buffRead="0";
     QString data = "$"+Rs232::idFour+"RVAR"+para+" \r";
-    cout<<data.toStdString()<<endl;
+//    cout<<data.toStdString()<<endl;
     taille = data.size()+1; // recupere la taille de la donnée
 
     char * buffer = new char[ taille ]; // pour convertir le string en char*
@@ -163,14 +166,14 @@ QString Rs232::recevoir(QString para, int id_tty) // recuperer la temperature ex
 
     buffRead=buff;//convertie buff(char*) en QString
 
-    cout<<"buffer : "<<buffRead.toStdString()<<endl;
-    cout<<"Taille du buffer :"<<buffRead.size()<<endl;
+//    cout<<"buffer : "<<buffRead.toStdString()<<endl;
+//    cout<<"Taille du buffer :"<<buffRead.size()<<endl;
 
     found = buffRead.lastIndexOf(" "); //trouve ou est le caractere  espace
     found2 = buffRead.indexOf(" ");//et le 2em caractere espace
     trameFormate=buffRead.mid(found2,found);
 
-    cout<<trameFormate.toStdString()<<endl;
+//    cout<<trameFormate.toStdString()<<endl;
 
     if ((trameFormate.toFloat()>0) && (trameFormate.toFloat()<1000))
     {

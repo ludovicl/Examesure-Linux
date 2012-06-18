@@ -40,7 +40,7 @@ private:
     int idcam, indexVitesse;
     string lienPhotos, baudFour;//baud = vitesse du four
     QString adressFour;
-    bool checkBoxCam;
+    string checkBoxCam;
     float coefExt1, coefExt2, coefExt3, coefRef1, coefRef2, coefRef3, stab;
 
     Ui::Config *ui;

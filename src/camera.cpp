@@ -48,7 +48,7 @@ bool Camera::connecter(int id)
 void Camera::enregistrer(string lien )
 {
     string nomPhoto;
-    string time4photo; //pour avoir date comme nom photo
+    string time4photo; //pour avoir date comme nom de  photo
 
     time_t t =(time(NULL));
 
@@ -65,13 +65,14 @@ Camera::Camera()
 
 Camera::~Camera()
 {
+    stopTh=false;
     Camera::nbObCam--;
-//    cvReleaseCapture(&capture);
+    cvReleaseCapture(&capture);
 }
 
 void Camera::run()
 {
-    while(true)
+    while(!stopTh)
     {
         usleep(50);
         image = cvQueryFrame(capture);//récuperer le flux de la webcam

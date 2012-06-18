@@ -35,7 +35,7 @@ private :
     vector<float>tabTempRecup;
     Four *fr;
     Sonde *sdRef;
-    bool checkBox;
+    string checkBox;
     int idcam;
     string adresseLienPhotos;
     //    Sonde sdRef;
@@ -49,7 +49,7 @@ signals:
 
 public :
 
-    Etalonnage(float, Sonde, Sonde, Sonde, bool, string, int );
+    Etalonnage(float, Sonde, Sonde, Sonde, string, string, int );
     ~Etalonnage();
 
     static int nbObjEtalonnage;//vérifier le nombre d'objet

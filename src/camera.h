@@ -29,6 +29,7 @@ private :
     QImage img;
     QPixmap pm;
     int idcam;
+    bool stopTh;
 
     static  CvCapture *capture;
 

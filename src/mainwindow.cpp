@@ -20,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     conf = new Config();
-    QMessageBox box;
 
     cam= new Camera();
 
@@ -44,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
         fichier>>contenuFichier>>contenuFichier;
         lienPhotos=contenuFichier;
         fichier>>contenuFichier>>contenuFichier;
-        checkBoxCam=contenuFichier.c_str();
+        checkBoxCam=contenuFichier;
         fichier>>contenuFichier>>contenuFichier;
         stab=atof(contenuFichier.c_str());
         fichier>>contenuFichier>>contenuFichier;
@@ -92,6 +91,23 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(tAcqu,SIGNAL(emSig(QString)),ui->labelTempInt,SLOT(setText(QString)));
 
+    cout<<"checkboxCAMMM : "<<checkBoxCam<<endl;
+
+    if((checkBoxCam=="1")&&(idcam==0))
+    {
+        QMessageBox box;
+        box.setText("Les photos ne seront pas enregistrees ");
+        box.exec();
+//        return;
+    }
+
+
+    if (((checkBoxCam=="0"))&&(idcam!=0))
+    {
+        QMessageBox box;
+        box.setText("Les photos ne seront pas enregistrees ");
+        box.exec();
+    }
 
     if((idcam!=0)&&(cam->connecter(idcam-1)==0))//si une camera est séléctioné et la camera bien connéecté
     {
@@ -99,12 +115,6 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(cam,SIGNAL(emSig2(QImage)),this,SLOT(afficheCam(QImage)));
     }
 
-    if((checkBoxCam==true)&&(idcam==0) || ((checkBoxCam==false)&&(idcam!=0)))
-    {
-        box.setText("Les photos ne seront pas enregistrees ");
-        box.exec();
-        return;
-    }
 
 }
 
@@ -126,10 +136,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_demarrer_clicked()
 {
-    QMessageBox box;
 
     if((ui->spinMaxi->text().toFloat())<(ui->spinMini->text().toFloat()))
     {
+        QMessageBox box;
         box.setText("LA TEMPERATURE MAXIMUM DOIT ETRE SUPERIEUR A LA TEMPERATURE MINIMUM...");
         box.exec();
         return;
@@ -137,20 +147,23 @@ void MainWindow::on_demarrer_clicked()
 
     if((ui->spinInter->text().toFloat())>(ui->spinMaxi->text().toFloat()))
     {
+        QMessageBox box;
         box.setText("L'INTERVALLE NE PEUT PAS ETRE SUPERIEUR A LA TEMPERATURE MAXIMUM...");
         box.exec();
         return;
     }
 
-    if(((ui->spinInter->text().toFloat())==0 && ui->spinMaxi->text().toFloat())==0 &&  (ui->spinMini->text().toFloat())==0)
-    {
-        box.setText("IL FAUT RENTRER DES VALEURS ");
-        box.exec();
-        return;
-    }
+//    if(((ui->spinInter->text().toFloat())==0 && ui->spinMaxi->text().toFloat())==0 &&  (ui->spinMini->text().toFloat())==0)
+//    {
+//        QMessageBox box;
+//        box.setText("IL FAUT RENTRER DES VALEURS ");
+//        box.exec();
+//        return;
+//    }
 
     if((ui->spinInter->text().toFloat())==0)
     {
+        QMessageBox box;
         box.setText("L'INTERVALLE NE PEUT PAS ETRE DE ZERO");
         box.exec();
         return;
@@ -204,7 +217,7 @@ void MainWindow::on_demarrer_clicked()
 
 void MainWindow::prendrePhoto()
 {
-    if((idcam!=0) &&(cam->connecter(idcam-1)==0)&& (checkBoxCam==true))
+    if((idcam!=0) &&(checkBoxCam=="1"))
     {
         cam->enregistrer(lienPhotos);
         cout<<"enregistrer ok !"<<endl;
