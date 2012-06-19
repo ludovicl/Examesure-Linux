@@ -16,8 +16,8 @@ using namespace std;
 class Four
 {
 private :
-    static int id;
-   static int vitesse;
+//    static int id;
+//   static int vitesse;
 
 public :
     static int nbObFour;

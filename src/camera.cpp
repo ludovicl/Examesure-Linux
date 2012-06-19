@@ -9,7 +9,6 @@
 //-------------------------------------------------------
 #include "camera.h"
 int Camera::nbObCam;
-CvCapture *Camera::capture;
 static QImage IplImage2QImage(const IplImage *iplImage)//fonction pour convertir IplImage* en QImage
 {
     int height = iplImage->height;
@@ -29,10 +28,10 @@ bool Camera::connecter(int id)
 {
 
     QMessageBox box;
-    Camera::capture = cvCaptureFromCAM(id);
+    capture = cvCaptureFromCAM(id);
 
     cout<<"CAMERA : "<<Camera::capture<<endl;
-    if (!Camera::capture)
+    if (!capture)
     {
         box.setText("Verifiez votre webcam");
         box.exec();
@@ -49,9 +48,7 @@ void Camera::enregistrer(string lien )
 {
     string nomPhoto;
     string time4photo; //pour avoir date comme nom de  photo
-
     time_t t =(time(NULL));
-
     time4photo=ctime(&t);//récupérer date, minute, heure
     nomPhoto = lien+'/'+time4photo+".jpg";
     cvSaveImage(nomPhoto.c_str(),image);

@@ -102,7 +102,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
 
-    if (((checkBoxCam=="0"))&&(idcam!=0))
+    if (checkBoxCam=="0")
     {
         QMessageBox box;
         box.setText("Les photos ne seront pas enregistrees ");
@@ -129,8 +129,11 @@ MainWindow::~MainWindow()
     {
         cam->terminate();//terminer le thread de la webcam;
         cout<<"cam delete !"<<endl;
-        delete cam;
+
     }
+    if(Camera::nbObCam >=1)
+    delete cam;
+//    delete conf;
     delete ui;
 }
 
@@ -145,7 +148,7 @@ void MainWindow::on_demarrer_clicked()
         return;
     }
 
-    if((ui->spinInter->text().toFloat())>(ui->spinMaxi->text().toFloat()))
+    if((ui->spinInter->text().toFloat())>(ui->spinMaxi->text().toFloat()-ui->spinMini->text().toFloat()))
     {
         QMessageBox box;
         box.setText("L'INTERVALLE NE PEUT PAS ETRE SUPERIEUR A LA TEMPERATURE MAXIMUM...");
@@ -169,7 +172,7 @@ void MainWindow::on_demarrer_clicked()
         return;
     }
 
-    if (Sonde::nbObjSonde>3)// pour ne pas
+    if (Sonde::nbObjSonde>3)// pour ne pas instancier plus d'objets que necessaire
     {
         delete sdRef;
         delete sdInt;
@@ -230,6 +233,7 @@ void MainWindow::on_actionConfiguration_avanc_e_triggered()
     conf->show();
 }
 
-
-
-
+void MainWindow::on_pushButton_clicked()
+{
+    MainWindow::close();
+}

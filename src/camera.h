@@ -31,7 +31,7 @@ private :
     int idcam;
     bool stopTh;
 
-    static  CvCapture *capture;
+    CvCapture *capture;
 
 public :
 

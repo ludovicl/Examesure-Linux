@@ -17,41 +17,45 @@ Config::Config(QWidget *parent) :
     cout<<"Configuration crée !"<<endl;
     ui->setupUi(this);
 
-    ifstream fichier(".examesure.cfg");
+    
 
 
     /*---------------Lecture du fichier de configuration si il existe----------------------------------*/
-    if(fichier)// si le fichier existe
+   
+    ifstream fichierConf(".examesure.cfg");//ouvre le fichier en lecture
+    if(fichierConf)// si le fichier existe
     {
         string contenuFichier;
-
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         adressFour=QString::fromStdString ( contenuFichier);
-        fichier>>contenuFichier>>contenuFichier;
+        
+        
+        
+        fichierConf>>contenuFichier>>contenuFichier;
         baudFour=contenuFichier;
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         indexVitesse=atoi(contenuFichier.c_str());
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         idcam = atoi(contenuFichier.c_str());//convertir string en int
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         lienPhotos=contenuFichier;
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         checkBoxCam=contenuFichier;
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         stab=atof(contenuFichier.c_str());
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         coefRef1=atof(contenuFichier.c_str());
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         coefRef2=atof(contenuFichier.c_str());
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         coefRef3=atof(contenuFichier.c_str());
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         coefExt1=atof(contenuFichier.c_str());
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         coefExt2=atof(contenuFichier.c_str());
-        fichier>>contenuFichier>>contenuFichier;
+        fichierConf>>contenuFichier>>contenuFichier;
         coefExt3=atof(contenuFichier.c_str());
-        fichier.close();
+        fichierConf.close();
 
         cout<<"Check box de config : "<<checkBoxCam<<endl;
 
@@ -79,31 +83,14 @@ Config::Config(QWidget *parent) :
 
         cout<<"contenue checkbox : "<<checkBoxCam<<endl;
 
-
-
     }
     else
     {
-        /*-------Creation du fichier de config et écriture de la configuration par defaut-----*/
         system("touch .examesure.cfg");// créer le fichier
-        ofstream fichier(".examesure.cfg", ios::app);
+        QMessageBox box;
+        box.setText("1er utilisation : veuilliez initialiser la configuration ");
+        box.exec();
 
-        fichier<<"adressefour "<<ui->spinAddr->text().toStdString()<<endl;
-        fichier<<"vitessefour "<<ui->comboVitesses->currentText().toStdString()<<endl;
-        fichier<<"indexVitesse "<<ui->comboVitesses->currentIndex()<<endl;
-        fichier<<"webcam "<<ui->comboWebcam->currentIndex()<<endl;
-        fichier<<"lienphoto "<<ui->labelLien->text().toStdString()<<endl;
-        fichier<<"checkbox "<<ui->checkBox->isChecked()<<endl;
-        fichier<<"stabilite "<<ui->spinStab->text().toStdString()<<endl;
-        fichier<<"refcoef1 "<<ui->spinCoefRef1->text().toStdString()<<endl;
-        fichier<<"refcoef2 "<<ui->spinCoefRef2->text().toStdString()<<endl;
-        fichier<<"refcoef3 "<<ui->spinCoefRef3->text().toStdString()<<endl;
-        fichier<<"extcoef1 "<<ui->spinCoefExt1->text().toStdString()<<endl;
-        fichier<<"extcoef2 "<<ui->spinCoefExt2->text().toStdString()<<endl;
-        fichier<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<endl;
-
-        fichier.close();  // fermer le fichier
-        /*-------Creation du fichier de config et écriture des données par defaut-----*/
     }
 }
 /*---------------FIN Lecture du fichier de configuration si il existe----------------------------------*/
@@ -131,26 +118,26 @@ void Config::on_pushValider_clicked()
 {
     QMessageBox box;
 
-    ofstream fichier(".examesure.cfg", ios::out | ios::trunc);
-
-    fichier<<"adressefour "<<ui->spinAddr->text().toStdString()<<endl;
-    fichier<<"vitessefour "<<ui->comboVitesses->currentText().toStdString()<<endl;
-    fichier<<"indexVitesse "<<ui->comboVitesses->currentIndex()<<endl;
-    fichier<<"webcam "<<ui->comboWebcam->currentIndex()<<endl;
-    fichier<<"lienphoto "<<ui->labelLien->text().toStdString()<<endl;
-    fichier<<"checkbox "<<ui->checkBox->isChecked()<<endl;
-    fichier<<"stabilite "<<ui->spinStab->text().toStdString()<<endl;
-    fichier<<"refcoef1 "<<ui->spinCoefRef1->text().toStdString()<<endl;
-    fichier<<"refcoef2 "<<ui->spinCoefRef2->text().toStdString()<<endl;
-    fichier<<"refcoef3 "<<ui->spinCoefRef3->text().toStdString()<<endl;
-    fichier<<"extcoef1 "<<ui->spinCoefExt1->text().toStdString()<<endl;
-    fichier<<"extcoef2 "<<ui->spinCoefExt2->text().toStdString()<<endl;
-    fichier<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<endl;
-    fichier.close();  // fermer le fichier
+    ofstream fichierConf(".examesure.cfg", ios::out | ios::trunc);//ouvre le fichier en eciture
+    fichierConf<<"adressefour "<<ui->spinAddr->text().toStdString()<<endl;
+    
+    
+    
+    fichierConf<<"vitessefour "<<ui->comboVitesses->currentText().toStdString()<<endl;
+    fichierConf<<"indexVitesse "<<ui->comboVitesses->currentIndex()<<endl;
+    fichierConf<<"webcam "<<ui->comboWebcam->currentIndex()<<endl;
+    fichierConf<<"lienphoto "<<ui->labelLien->text().toStdString()<<endl;
+    fichierConf<<"checkbox "<<ui->checkBox->isChecked()<<endl;
+    fichierConf<<"stabilite "<<ui->spinStab->text().toStdString()<<endl;
+    fichierConf<<"refcoef1 "<<ui->spinCoefRef1->text().toStdString()<<endl;
+    fichierConf<<"refcoef2 "<<ui->spinCoefRef2->text().toStdString()<<endl;
+    fichierConf<<"refcoef3 "<<ui->spinCoefRef3->text().toStdString()<<endl;
+    fichierConf<<"extcoef1 "<<ui->spinCoefExt1->text().toStdString()<<endl;
+    fichierConf<<"extcoef2 "<<ui->spinCoefExt2->text().toStdString()<<endl;
+    fichierConf<<"extcoef3 "<<ui->spinCoefExt3->text().toStdString()<<endl;
+    fichierConf.close();  // fermer le fichier
 
     qApp->exit(1);
-
-
 }
 
 void Config::on_pushAnnuler_clicked()

@@ -89,7 +89,7 @@
       <x>20</x>
       <y>180</y>
       <width>391</width>
-      <height>281</height>
+      <height>261</height>
      </rect>
     </property>
     <property name="font">
@@ -127,8 +127,11 @@
        <height>27</height>
       </rect>
      </property>
+     <property name="minimum">
+      <number>-100</number>
+     </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>850</number>
      </property>
      <property name="value">
       <number>40</number>
@@ -143,8 +146,11 @@
        <height>27</height>
       </rect>
      </property>
+     <property name="minimum">
+      <number>-100</number>
+     </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>850</number>
      </property>
      <property name="value">
       <number>60</number>
@@ -345,6 +351,19 @@
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>450</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Quitter</string>
+    </property>
+   </widget>
    <zorder>frame_3</zorder>
    <zorder>frame_4</zorder>
    <zorder>frame</zorder>
@@ -354,6 +373,7 @@
    <zorder>tableWidget</zorder>
    <zorder>labelCam</zorder>
    <zorder>label_7</zorder>
+   <zorder>pushButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

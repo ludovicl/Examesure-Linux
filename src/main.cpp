@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
     w.show();
     int returnValue = a.exec();
 
-
     if (0!=returnValue)
     {
         QProcess::startDetached(argv[0], a.arguments());

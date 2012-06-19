@@ -39,6 +39,8 @@ private slots:
 
     void on_actionConfiguration_avanc_e_triggered();
 
+    void on_pushButton_clicked();
+
 private:
     ThreadAcquerir *tAcqu;
     int idcam,indexVitesse;

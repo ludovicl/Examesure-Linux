@@ -16,7 +16,7 @@ Etalonnage::Etalonnage(float stabFromCfg, Sonde ref, Sonde ext, Sonde inte, stri
 
     stabilite=stabFromCfg;
     cout<<"Un objet etalonnage"<<endl;
-
+    checkBox = check;
     fr = new Four;
     idcam = _idCam;
     sdRef = new Sonde("reference",ref.getCoef1(),ref.getCoef2(), ref.getCoef3());
@@ -118,13 +118,9 @@ void Etalonnage::run()
         //tant que temperature est suprérieur a la consigne +0,5° ou inférieur à la consigne -0.5°
         while(true)
         {
-            if ((tmpTempo<(tabTemp.at(i)+0.5)) && (tmpTempo>(tabTemp.at(i)-0.5)) )
+            if ((tmpTempo<(tabTemp.at(i)+5)) && (tmpTempo>(tabTemp.at(i)-5)) )
             {
-//                QMessageBox box;
-//                box.setText("CONSIGNE ATTEINTE ");
-//                box.exec();
                 break;
-
             }
             else
             {
@@ -153,29 +149,31 @@ void Etalonnage::run()
             }
             stab = testStabilite(tabTempRecup, stabilite);
         }
+        cout<<"checkBox dans etalonnage : "<<checkBox<<endl;
 
         if((checkBox=="1")&&(idcam!=0))
         {
             cout<<"CHEESE"<<endl;
             emit emSigPrendPhoto();
             fichier<<"Reference : "<<endl;
-            fichier<<i+1<<" : ";
+//            fichier<<i+1<<" : ";
             fichier<<sdRef->acquerirTemp().toFloat()<<endl;
         }
         else
         {
             cout<<"ON STOCK DANS LE FICHIER "<<endl;
             fichier<<"Reference : "<<endl;
-            fichier<<i+1<<" : ";
+//            fichier<<i+1<<" : ";
             fichier<<sdRef->acquerirTemp().toFloat()<<endl;
-
+            usleep(200);
             fichier<<"Interne : "<<endl;
-            fichier<<i+1<<" : ";
+//            fichier<<i+1<<" : ";
             fichier<<sdInt->acquerirTemp().toFloat()<<endl;
 
-            fichier.close();
+
         }
     }
+     fichier.close();
 }
 
 bool Etalonnage::testStabilite(vector<float>tab, float stability)//

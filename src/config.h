@@ -16,6 +16,7 @@ using namespace std;
 #include <QWidget>
 #include <fstream>
 #include <QAbstractButton>
+#include <QMessageBox>
 
 using namespace std;
 namespace Ui {

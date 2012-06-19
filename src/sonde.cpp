@@ -51,7 +51,7 @@ QString Sonde::acquerirTemp() //lire la temperature du type
 
     float valeur = rs->recevoir(voie,rs->get_id_tty()).toFloat();
 
-    valeur=coefficient1+(valeur*coefficient2)+coefficient3*(valeur*valeur);
+    valeur=coefficient1*(valeur*valeur)+(valeur*coefficient2)+coefficient3;
     QString strAReturn;
     strAReturn.setNum(valeur);
     return  strAReturn;
