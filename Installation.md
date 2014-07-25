@@ -1,4 +1,4 @@
-#Préparer sont PC  
+#Préparer son PC  
 **Ajouter l'utilisateur au groupe dialout** 
 <br>
 <br>
